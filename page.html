@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Donald Chung — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #faf8f4;
+      --pink:  #fde8e8;
+      --blue:  #e8eaf6;
+      --green: #e8f5e9;
+      --peach: #fef3e2;
+      --lavender: #f0eaff;
+      --text:  #1c1c1c;
+      --muted: #888;
+      --border: #e8e4de;
+      --pink-accent: #e07a7a;
+      --blue-accent: #7986cb;
+      --green-accent: #66bb6a;
+      --peach-accent: #f0a050;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(250,248,244,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 20px;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--text);
+      color: var(--cream) !important;
+      padding: 8px 20px;
+      border-radius: 999px;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.8; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 48px 80px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+    .hero-tag::before {
+      content: '';
+      display: block;
+      width: 24px; height: 1px;
+      background: var(--muted);
+    }
+    .hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(48px, 7vw, 88px);
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 28px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--pink-accent);
+    }
+    .hero-sub {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--text);
+      color: var(--cream);
+      padding: 14px 32px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-outline {
+      border: 1.5px solid var(--border);
+      background: white;
+      color: var(--text);
+      padding: 13px 28px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .btn-outline:hover { border-color: #aaa; transform: translateY(-1px); }
+
+    /* floating blobs */
+    .hero-blobs {
+      position: absolute;
+      top: 0; right: 0;
+      width: 50vw; height: 100vh;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 60% 40% 70% 30% / 40% 60% 40% 60%;
+      opacity: 0.5;
+      animation: blobFloat 8s ease-in-out infinite alternate;
+    }
+    .blob-1 { width: 400px; height: 400px; background: var(--pink); top: 10%; right: 5%; animation-delay: 0s; }
+    .blob-2 { width: 300px; height: 300px; background: var(--blue); top: 45%; right: 25%; animation-delay: 2s; }
+    .blob-3 { width: 200px; height: 200px; background: var(--green); top: 65%; right: 8%; animation-delay: 4s; }
+    @keyframes blobFloat {
+      from { transform: translateY(0) rotate(0deg) scale(1); }
+      to   { transform: translateY(-30px) rotate(8deg) scale(1.05); }
+    }
+
+    /* ── SECTION BASE ── */
+    section { padding: 100px 48px; max-width: 900px; margin: 0 auto; }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── PROJECTS ── */
+    .projects-grid { display: grid; gap: 16px; }
+
+    .project-card {
+      border-radius: 24px;
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: start;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s, box-shadow 0.25s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .project-card:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(0,0,0,0.07); }
+
+    .project-card.pink    { background: var(--pink); }
+    .project-card.blue    { background: var(--blue); }
+    .project-card.green   { background: var(--green); }
+    .project-card.peach   { background: var(--peach); }
+    .project-card.lavender{ background: var(--lavender); }
+
+    .project-emoji {
+      font-size: 36px;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .project-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .pink     .project-label { color: var(--pink-accent); }
+    .blue     .project-label { color: var(--blue-accent); }
+    .green    .project-label { color: var(--green-accent); }
+    .peach    .project-label { color: var(--peach-accent); }
+    .lavender .project-label { color: #9c6fe4; }
+
+    .project-title {
+      font-family: 'Lora', serif;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      line-height: 1.25;
+    }
+    .project-desc {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      max-width: 480px;
+    }
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.6);
+      color: #555;
+    }
+    .project-arrow {
+      font-size: 20px;
+      opacity: 0.4;
+      margin-top: 4px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .project-card:hover .project-arrow { opacity: 1; transform: translate(3px,-3px); }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    .about-text h2 {
+      font-family: 'Lora', serif;
+      font-size: 36px;
+      font-weight: 600;
+      line-height: 1.25;
+      margin-bottom: 20px;
+    }
+    .about-text h2 em { font-style: italic; color: var(--blue-accent); }
+    .about-text p {
+      font-size: 15px;
+      color: #555;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .stat-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      text-align: center;
+    }
+    .stat-number {
+      font-family: 'Lora', serif;
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--text);
+      display: block;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── EXPERIENCE ── */
+    .exp-list { display: grid; gap: 16px; }
+    .exp-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .exp-role { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+    .exp-company { font-size: 14px; color: var(--muted); }
+    .exp-date {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      background: #f4f4f4;
+      padding: 4px 14px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .skill-group {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+    }
+    .skill-group-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .skill-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .skill-chip {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: #f4f4f4;
+      color: #444;
+    }
+
+    /* ── CONTACT ── */
+    .contact-box {
+      background: var(--text);
+      border-radius: 32px;
+      padding: 64px;
+      text-align: center;
+      color: var(--cream);
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-box::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(253,232,232,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .contact-box::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -60px;
+      width: 250px; height: 250px;
+      background: radial-gradient(circle, rgba(232,234,246,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .contact-box h2 {
+      font-family: 'Lora', serif;
+      font-size: 42px;
+      font-style: italic;
+      font-weight: 400;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .contact-box p {
+      font-size: 16px;
+      opacity: 0.6;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+    .contact-btn {
+      padding: 14px 28px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .contact-btn:hover { opacity: 0.85; transform: translateY(-2px); }
+    .contact-btn.light { background: white; color: var(--text); }
+    .contact-btn.ghost { background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.2); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 40px;
+      font-size: 13px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 24px 60px; }
+      section { padding: 60px 24px; }
+      .about-grid { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .project-card { grid-template-columns: 1fr; }
+      .contact-box { padding: 40px 24px; }
+      .hero-blobs { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">donald chung</a>
+    <ul class="nav-links">
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#about">about</a></li>
+      <li><a href="#experience">experience</a></li>
+      <li><a href="#contact" class="nav-cta">say hello →</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div style="position:relative; overflow:hidden;">
+    <div class="hero-blobs" aria-hidden="true">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
+    <div class="hero" style="position:relative; z-index:1;">
+      <div class="hero-tag">Product designer & builder · Sydney</div>
+      <h1>Donald<br/><em>Chung.</em></h1>
+      <p class="hero-sub">
+        Computer Engineering student at UNSW who designs <em style="font-style:italic; color:var(--blue-accent);">and</em> builds. 
+        I make real products that solve real problems — then ship them.
+      </p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn-primary">see my work ↓</a>
+        <a href="Donald-Chung__2_.pdf" download class="btn-outline">download résumé</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-label">✦ selected projects</div>
+    <div class="projects-grid">
+
+      <!-- WhatStillOpen -->
+      <a href="https://github.com/donaldchunggit/WhatStillOpenSydney" target="_blank" class="project-card pink fade-up">
+        <div>
+          <span class="project-emoji">🌙</span>
+          <div class="project-label">Consumer App · Live</div>
+          <div class="project-title">What's Still Open Sydney</div>
+          <p class="project-desc">
+            A late-night activity finder for Sydney — shows every restaurant, bar, and venue open right now, with real-time countdowns, geolocation search, and a "Plan My Night" AI feature that curates a full evening in one tap.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Next.js</span>
+            <span class="tag">Google Places API</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">Vercel</span>
+            <span class="tag">AI Planning</span>
+          </div>
+        </div>
+        <div class="project-arrow">↗</div>
+      </a>
+
+      <!-- Snap Ops -->
+      <a href="https://github.com/donaldchunggit/stockkeephelper" target="_blank" class="project-card blue fade-up">
+        <div>
+          <span class="project-emoji">📦</span>
+          <div class="project-label">Internal Tool · Production</div>
+          <div class="project-title">Snap Ops — Retail Dashboard</div>
+          <p class="project-desc">
+            Internal operations dashboard for a real retail business I manage. Handles inventory, orders, tracking, and low-stock alerts — replacing spreadsheets entirely. Built with Next.js, Express, and SQLite.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Next.js</span>
+            <span class="tag">Express</span>
+            <span class="tag">SQLite</span>
+            <span class="tag">Dashboard UI</span>
+            <span class="tag">Real users</span>
+          </div>
+        </div>
+        <div class="project-arrow">↗</div>
+      </a>
+
+      <!-- FEA Destroyer -->
+      <a href="https://github.com/donaldchunggit/FEAdestroyer" target="_blank" class="project-card green fade-up">
+        <div>
+          <span class="project-emoji">🏗️</span>
+          <div class="project-label">ML / Engineering · Research</div>
+          <div class="project-title">FEA Destroyer</div>
+          <p class="project-desc">
+            Physics-informed ML surrogate for 2D truss bridge design. Uses a matrix-stiffness FEM solver to generate training data, then trains models to predict stress and deflection from geometry alone — orders of magnitude faster than traditional FEA.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Machine Learning</span>
+            <span class="tag">FEM</span>
+            <span class="tag">NumPy</span>
+          </div>
+        </div>
+        <div class="project-arrow">↗</div>
+      </a>
+
+      <!-- Quiz Backend -->
+      <a href="https://github.com/donaldchunggit" target="_blank" class="project-card peach fade-up">
+        <div>
+          <span class="project-emoji">🧠</span>
+          <div class="project-label">Backend · API Design</div>
+          <div class="project-title">Quiz Platform Backend</div>
+          <p class="project-desc">
+            Production-style REST API inspired by Kahoot. Full authentication & session management, quiz and question CRUD, TypeScript migration with strict typing, persistent storage, and integration tests throughout.
+          </p>
+          <div class="project-tags">
+            <span class="tag">TypeScript</span>
+            <span class="tag">REST API</span>
+            <span class="tag">Node.js</span>
+            <span class="tag">Testing</span>
+          </div>
+        </div>
+        <div class="project-arrow">↗</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-label">✦ about me</div>
+    <div class="about-grid">
+      <div class="about-text fade-up">
+        <h2>Designer who <em>actually</em> ships code.</h2>
+        <p>
+          I'm a Computer Engineering student at UNSW with a rare combination: I care deeply about how things look and feel, and I can build them end-to-end. My projects aren't mockups — they're live, deployed, and used by real people.
+        </p>
+        <p>
+          Outside of code, I'm Events Director at UNSW Golf Society, on the UI/UX Subcommittee at DevSoc, and I've grown a business to 110k monthly viewers while managing a team of artists. I go wide and go deep.
+        </p>
+        <p style="color:var(--muted); font-size:14px;">
+          🧗 Bouldering &nbsp;·&nbsp; 📈 Financial markets &nbsp;·&nbsp; 🎮 Riot Games Society &nbsp;·&nbsp; 🇦🇺 Sydney-based
+        </p>
+      </div>
+      <div class="stats-grid fade-up">
+        <div class="stat-card">
+          <span class="stat-number">110k</span>
+          <div class="stat-label">monthly viewers grown at Ruggy Ducky Studios</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">$100k</span>
+          <div class="stat-label">revenue led within 2 months at Snap Wireless</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">40%</span>
+          <div class="stat-label">avg student grade improvement as tutor</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">4</span>
+          <div class="stat-label">shipped projects on GitHub</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-label">✦ experience</div>
+    <div class="exp-list fade-up">
+      <div class="exp-card">
+        <div>
+          <div class="exp-role">Manager & Lead Sales</div>
+          <div class="exp-company">Snap Wireless · Sydney</div>
+        </div>
+        <span class="exp-date">Nov 2025 – Present</span>
+      </div>
+      <div class="exp-card">
+        <div>
+          <div class="exp-role">Founder</div>
+          <div class="exp-company">Ruggy Ducky Studios · Sydney</div>
+        </div>
+        <span class="exp-date">Feb 2025 – Present</span>
+      </div>
+      <div class="exp-card">
+        <div>
+          <div class="exp-role">Physics, Maths & Biology Tutor</div>
+          <div class="exp-company">Tuita Tutoring · Sydney</div>
+        </div>
+        <span class="exp-date">Jan 2025 – Jan 2026</span>
+      </div>
+      <div class="exp-card">
+        <div>
+          <div class="exp-role">Photobooth Assistant</div>
+          <div class="exp-company">Happy Cap Studios · Sydney</div>
+        </div>
+        <span class="exp-date">Sep 2024 – Present</span>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:60px;">✦ education</div>
+    <div class="exp-list fade-up">
+      <div class="exp-card">
+        <div>
+          <div class="exp-role">Bachelor of Computer Engineering (Honours)</div>
+          <div class="exp-company">University of New South Wales (UNSW) · Sydney · Credit WAM</div>
+        </div>
+        <span class="exp-date">2024 – 2028</span>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:60px;">✦ skills</div>
+    <div class="skills-grid fade-up">
+      <div class="skill-group">
+        <div class="skill-group-title">Languages</div>
+        <div class="skill-chips">
+          <span class="skill-chip">TypeScript</span>
+          <span class="skill-chip">Python</span>
+          <span class="skill-chip">C</span>
+          <span class="skill-chip">JavaScript</span>
+          <span class="skill-chip">Assembly</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Frontend</div>
+        <div class="skill-chips">
+          <span class="skill-chip">Next.js</span>
+          <span class="skill-chip">React</span>
+          <span class="skill-chip">HTML/CSS</span>
+          <span class="skill-chip">UI/UX</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Backend & Tools</div>
+        <div class="skill-chips">
+          <span class="skill-chip">Node.js</span>
+          <span class="skill-chip">Express</span>
+          <span class="skill-chip">REST APIs</span>
+          <span class="skill-chip">SQLite</span>
+          <span class="skill-chip">Git</span>
+          <span class="skill-chip">Linux</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" style="padding-bottom: 80px;">
+    <div class="contact-box fade-up">
+      <h2>let's work together</h2>
+      <p>Open to product design, UX, and design engineering roles. Sydney-based.</p>
+      <div class="contact-links">
+        <a href="mailto:donnychung92@gmail.com" class="contact-btn light">✉️ email me</a>
+        <a href="https://linkedin.com/in/donald-chung-45229b350" target="_blank" class="contact-btn ghost">LinkedIn ↗</a>
+        <a href="https://github.com/donaldchunggit" target="_blank" class="contact-btn ghost">GitHub ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    built & designed by donald chung · 2026 · sydney, australia
+  </footer>
+
+  <script>
+    // Fade-up on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
