@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Donald Chung — Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -517,6 +519,24 @@
       border-top: 1px solid var(--border);
     }
 
+    /* ── LUCIDE ICONS ── */
+    .project-emoji svg { width: 36px; height: 36px; margin-bottom: 16px; display: block; }
+    .pink     .project-emoji svg { color: var(--pink-accent); }
+    .blue     .project-emoji svg { color: var(--blue-accent); }
+    .green    .project-emoji svg { color: var(--green-accent); }
+    .peach    .project-emoji svg { color: var(--peach-accent); }
+    .lavender .project-emoji svg { color: #9c6fe4; }
+
+    .project-arrow svg { width: 20px; height: 20px; }
+
+    .section-label svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    .contact-btn svg { width: 16px; height: 16px; }
+
+    .about-photo-caption svg { width: 13px; height: 13px; vertical-align: middle; margin-right: 3px; }
+
+    .hobby-line svg { width: 14px; height: 14px; vertical-align: middle; margin-right: 2px; }
+
     /* ── ANIMATIONS ── */
     .fade-up {
       opacity: 0;
@@ -575,13 +595,13 @@
 
   <!-- PROJECTS -->
   <section id="projects">
-    <div class="section-label">✦ selected projects</div>
+    <div class="section-label"><i data-lucide="sparkles"></i>selected projects</div>
     <div class="projects-grid">
 
       <!-- WhatStillOpen -->
       <a href="https://github.com/donaldchunggit/WhatStillOpenSydney" target="_blank" class="project-card pink fade-up">
         <div>
-          <span class="project-emoji">🌙</span>
+          <span class="project-emoji"><i data-lucide="moon"></i></span>
           <div class="project-label">Consumer App · Live</div>
           <div class="project-title">What's Still Open Sydney</div>
           <p class="project-desc">
@@ -595,13 +615,13 @@
             <span class="tag">AI Planning</span>
           </div>
         </div>
-        <div class="project-arrow">↗</div>
+        <div class="project-arrow"><i data-lucide="arrow-up-right"></i></div>
       </a>
 
       <!-- Snap Ops -->
       <a href="https://github.com/donaldchunggit/stockkeephelper" target="_blank" class="project-card blue fade-up">
         <div>
-          <span class="project-emoji">📦</span>
+          <span class="project-emoji"><i data-lucide="package"></i></span>
           <div class="project-label">Internal Tool · Production</div>
           <div class="project-title">Snap Ops — Retail Dashboard</div>
           <p class="project-desc">
@@ -615,13 +635,13 @@
             <span class="tag">Real users</span>
           </div>
         </div>
-        <div class="project-arrow">↗</div>
+        <div class="project-arrow"><i data-lucide="arrow-up-right"></i></div>
       </a>
 
       <!-- FEA Destroyer -->
       <a href="https://github.com/donaldchunggit/FEAdestroyer" target="_blank" class="project-card green fade-up">
         <div>
-          <span class="project-emoji">🏗️</span>
+          <span class="project-emoji"><i data-lucide="hard-hat"></i></span>
           <div class="project-label">ML / Engineering · Research</div>
           <div class="project-title">FEA Destroyer</div>
           <p class="project-desc">
@@ -634,13 +654,34 @@
             <span class="tag">NumPy</span>
           </div>
         </div>
-        <div class="project-arrow">↗</div>
+        <div class="project-arrow"><i data-lucide="arrow-up-right"></i></div>
+      </a>
+
+      <!-- Wingman -->
+      <a href="https://github.com/chunyin7/wingman" target="_blank" class="project-card lavender fade-up">
+        <div>
+          <span class="project-emoji"><i data-lucide="message-circle"></i></span>
+          <div class="project-label">Hackathon · Unihack 2026</div>
+          <div class="project-title">Wingman — AI Social Coach</div>
+          <p class="project-desc">
+            "Duolingo for social anxiety." An AI-powered rehearsal coach that lets you practice real conversations before they happen — with scenario-based chat, voice interactions, daily challenges, XP streaks, and a gamified skill roadmap.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Next.js</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">OpenAI</span>
+            <span class="tag">Supabase</span>
+            <span class="tag">Tailwind CSS</span>
+            <span class="tag">Vercel</span>
+          </div>
+        </div>
+        <div class="project-arrow"><i data-lucide="arrow-up-right"></i></div>
       </a>
 
       <!-- Quiz Backend -->
       <a href="https://github.com/donaldchunggit" target="_blank" class="project-card peach fade-up">
         <div>
-          <span class="project-emoji">🧠</span>
+          <span class="project-emoji"><i data-lucide="brain"></i></span>
           <div class="project-label">Backend · API Design</div>
           <div class="project-title">Quiz Platform Backend</div>
           <p class="project-desc">
@@ -653,7 +694,7 @@
             <span class="tag">Testing</span>
           </div>
         </div>
-        <div class="project-arrow">↗</div>
+        <div class="project-arrow"><i data-lucide="arrow-up-right"></i></div>
       </a>
 
     </div>
@@ -661,11 +702,11 @@
 
   <!-- ABOUT -->
   <section id="about">
-    <div class="section-label">✦ about me</div>
+    <div class="section-label"><i data-lucide="sparkles"></i>about me</div>
     <div class="about-grid">
       <div class="about-photo">
         <img src="photos/donald_chung.jpg" alt="Donald Chung" />
-        <p class="about-photo-caption">📍 Sydney, Australia</p>
+        <p class="about-photo-caption"><i data-lucide="map-pin"></i> Sydney, Australia</p>
       </div>
       <div class="about-text fade-up">
         <h2>Designer who <em>actually</em> ships code.</h2>
@@ -676,7 +717,10 @@
           Outside of code, I'm Events Director at UNSW Golf Society, ex state rower, cmus violin player and I've grown a business to 110k monthly viewers while managing a team of artists.
         </p>
         <p style="color:var(--muted); font-size:14px;">
-          🧗 Bouldering &nbsp;·&nbsp; 📈 Financial markets &nbsp;·&nbsp; 🎮 Riot Games Society &nbsp;·&nbsp; 🇦🇺 Sydney-based
+          <span class="hobby-line"><i data-lucide="mountain-snow"></i> Bouldering</span> &nbsp;·&nbsp;
+          <span class="hobby-line"><i data-lucide="trending-up"></i> Financial markets</span> &nbsp;·&nbsp;
+          <span class="hobby-line"><i data-lucide="gamepad-2"></i> Riot Games Society</span> &nbsp;·&nbsp;
+          <span class="hobby-line"><i data-lucide="map-pin"></i> Sydney-based</span>
         </p>
       </div>
       <div class="stats-grid fade-up">
@@ -693,7 +737,7 @@
           <div class="stat-label">avg student grade improvement as tutor</div>
         </div>
         <div class="stat-card">
-          <span class="stat-number">4</span>
+          <span class="stat-number">5</span>
           <div class="stat-label">shipped projects on GitHub</div>
         </div>
       </div>
@@ -702,7 +746,7 @@
 
   <!-- EXPERIENCE -->
   <section id="experience">
-    <div class="section-label">✦ experience</div>
+    <div class="section-label"><i data-lucide="sparkles"></i>experience</div>
     <div class="exp-list fade-up">
       <div class="exp-card">
         <div>
@@ -734,7 +778,7 @@
       </div>
     </div>
 
-    <div class="section-label" style="margin-top:60px;">✦ education</div>
+    <div class="section-label" style="margin-top:60px;"><i data-lucide="sparkles"></i>education</div>
     <div class="exp-list fade-up">
       <div class="exp-card">
         <div>
@@ -745,7 +789,7 @@
       </div>
     </div>
 
-    <div class="section-label" style="margin-top:60px;">✦ skills</div>
+    <div class="section-label" style="margin-top:60px;"><i data-lucide="sparkles"></i>skills</div>
     <div class="skills-grid fade-up">
       <div class="skill-group">
         <div class="skill-group-title">Languages</div>
@@ -786,7 +830,7 @@
       <h2>let's work together</h2>
       <p>Open to product design, UX, and design engineering roles. Sydney-based.</p>
       <div class="contact-links">
-        <a href="/cdn-cgi/l/email-protection#f3979c9d9d8a909b869d94cac1b3949e929a9fdd909c9e" class="contact-btn light">✉️ email me</a>
+        <a href="/cdn-cgi/l/email-protection#f3979c9d9d8a909b869d94cac1b3949e929a9fdd909c9e" class="contact-btn light"><i data-lucide="mail"></i> email me</a>
         <a href="https://linkedin.com/in/donald-chung-45229b350" target="_blank" class="contact-btn ghost">LinkedIn ↗</a>
         <a href="https://github.com/donaldchunggit" target="_blank" class="contact-btn ghost">GitHub ↗</a>
       </div>
@@ -798,6 +842,8 @@
   </footer>
 
   <script>
+    lucide.createIcons();
+
     // Fade-up on scroll
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((e, i) => {
