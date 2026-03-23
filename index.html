@@ -5,12 +5,14 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Donald Chung — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: #050510;
       color: white;
-      font-family: 'Courier New', monospace;
+      font-family: 'Roboto Serif', serif;
       overflow: hidden;
       height: 100vh;
       width: 100vw;
@@ -33,7 +35,7 @@
       text-align: right; pointer-events: none;
     }
     #score-display .s-label { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 0.12em; text-transform: uppercase; }
-    #score-display .s-value { font-size: 26px; color: #a5f3fc; font-weight: bold; font-family: 'Courier New', monospace; }
+    #score-display .s-value { font-size: 26px; color: #a5f3fc; font-weight: bold; font-family: 'Roboto Serif', serif; }
 
     /* ── CONTROLS HINT ── */
     #controls-hint {
@@ -79,7 +81,7 @@
     }
     #info-panel.visible { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: all; }
     #info-panel .p-category { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #a5f3fc; margin-bottom: 10px; }
-    #info-panel .p-title { font-size: 24px; font-weight: bold; color: white; margin-bottom: 14px; line-height: 1.2; font-family: 'Courier New', monospace; }
+    #info-panel .p-title { font-size: 24px; font-weight: bold; color: white; margin-bottom: 14px; line-height: 1.2; font-family: 'Roboto Serif', serif; }
     #info-panel .p-body { font-size: 13.5px; color: rgba(255,255,255,0.65); line-height: 1.8; margin-bottom: 18px; }
     #info-panel .p-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 22px; }
     #info-panel .p-tag {
@@ -93,13 +95,13 @@
       background: #a5f3fc; color: #050510;
       padding: 10px 22px; border-radius: 999px;
       font-size: 12px; font-weight: bold; text-decoration: none;
-      font-family: 'Courier New', monospace; transition: opacity 0.2s;
+      font-family: 'Roboto Serif', serif; transition: opacity 0.2s;
     }
     .p-btn-link:hover { opacity: 0.85; }
     .p-btn-close {
       background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
       color: rgba(255,255,255,0.7); padding: 10px 22px; border-radius: 999px;
-      font-size: 12px; cursor: pointer; font-family: 'Courier New', monospace;
+      font-size: 12px; cursor: pointer; font-family: 'Roboto Serif', serif;
       letter-spacing: 0.04em; transition: background 0.2s;
     }
     .p-btn-close:hover { background: rgba(255,255,255,0.12); }
@@ -116,7 +118,7 @@
     }
     #intro h1 {
       font-size: clamp(40px, 7vw, 80px); font-weight: bold; color: white;
-      letter-spacing: -0.02em; margin-bottom: 10px; font-family: 'Courier New', monospace;
+      letter-spacing: -0.02em; margin-bottom: 10px; font-family: 'Roboto Serif', serif;
     }
     #intro h1 span { color: #a5f3fc; }
     #intro .i-sub {
@@ -140,7 +142,7 @@
       background: #a5f3fc; color: #050510; border: none;
       padding: 16px 52px; border-radius: 999px;
       font-size: 15px; font-weight: bold; cursor: pointer;
-      font-family: 'Courier New', monospace; letter-spacing: 0.06em;
+      font-family: 'Roboto Serif', serif; letter-spacing: 0.06em;
       transition: transform 0.2s, opacity 0.2s; box-shadow: 0 0 40px rgba(165,243,252,0.3);
     }
     #startBtn:hover { transform: translateY(-2px); opacity: 0.9; }
@@ -154,22 +156,61 @@
       display: none; box-shadow: 0 0 100px rgba(165,243,252,0.15);
     }
     #all-found .af-rocket { font-size: 48px; margin-bottom: 16px; }
-    #all-found h2 { font-size: 28px; color: #a5f3fc; margin-bottom: 12px; font-family: 'Courier New', monospace; }
+    #all-found h2 { font-size: 28px; color: #a5f3fc; margin-bottom: 12px; font-family: 'Roboto Serif', serif; }
     #all-found p { color: rgba(255,255,255,0.55); margin-bottom: 32px; font-size: 14px; line-height: 1.75; }
     #all-found .af-links { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
     #all-found a {
       padding: 12px 22px; border-radius: 999px; font-size: 12px; font-weight: bold;
-      text-decoration: none; font-family: 'Courier New', monospace; letter-spacing: 0.04em;
+      text-decoration: none; font-family: 'Roboto Serif', serif; letter-spacing: 0.04em;
     }
     #all-found a.af-primary { background: #a5f3fc; color: #050510; }
     #all-found a.af-ghost { background: rgba(255,255,255,0.08); color: white; border: 1px solid rgba(255,255,255,0.18); }
     #all-found .af-replay {
       background: rgba(165,243,252,0.1); border: 1px solid rgba(165,243,252,0.25);
       color: #a5f3fc; padding: 12px 22px; border-radius: 999px;
-      font-size: 12px; cursor: pointer; font-family: 'Courier New', monospace;
+      font-size: 12px; cursor: pointer; font-family: 'Roboto Serif', serif;
       font-weight: bold; transition: background 0.2s;
     }
     #all-found .af-replay:hover { background: rgba(165,243,252,0.2); }
+
+    /* ── MOBILE JOYSTICK ── */
+    #joy-zone {
+      position: fixed; bottom: 36px; left: 36px; z-index: 20;
+      width: 120px; height: 120px;
+      display: none;
+    }
+    #joy-base {
+      width: 120px; height: 120px; border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      border: 1.5px solid rgba(255,255,255,0.15);
+      position: relative; touch-action: none;
+    }
+    #joy-thumb {
+      width: 46px; height: 46px; border-radius: 50%;
+      background: rgba(165,243,252,0.25);
+      border: 1.5px solid rgba(165,243,252,0.5);
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      transition: background 0.1s;
+      pointer-events: none;
+    }
+    #fire-btn {
+      position: fixed; bottom: 56px; right: 36px; z-index: 20;
+      width: 80px; height: 80px; border-radius: 50%;
+      background: rgba(165,243,252,0.15);
+      border: 1.5px solid rgba(165,243,252,0.4);
+      color: #a5f3fc; font-size: 12px; font-weight: 700;
+      font-family: 'Roboto Serif', serif; letter-spacing: 0.06em;
+      cursor: pointer; display: none;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #fire-btn:active { background: rgba(165,243,252,0.35); }
+    @media (pointer: coarse) {
+      #joy-zone, #fire-btn { display: block; }
+      #controls-hint { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -180,7 +221,8 @@
   <h1>SHOOT THE<br/><span>METEORS</span></h1>
   <p class="i-sub">Fly through space and shoot meteors to discover who I am as a developer. Each meteor holds a secret.</p>
   <div class="i-cards">
-    <div class="i-card"><span class="i-card-key">W A S D</span> move ship</div>
+    <div class="i-card"><span class="i-card-key">W / S</span> thrust forward / back</div>
+    <div class="i-card"><span class="i-card-key">A / D</span> spin ship</div>
     <div class="i-card"><span class="i-card-key">SPACE</span> shoot</div>
     <div class="i-card"><span class="i-card-key">MOUSE</span> aim &amp; click to fire</div>
   </div>
@@ -205,10 +247,10 @@
 
 <!-- CONTROLS -->
 <div id="controls-hint">
-  <div class="hint-item"><span class="hint-key">WASD</span> move</div>
-  <div class="hint-item"><span class="hint-key">SPACE</span> shoot</div>
-  <div class="hint-item"><span class="hint-key">CLICK</span> fire at cursor</div>
-  <div class="hint-item"><span class="hint-key">ESC</span> close panel</div>
+  <div class="hint-item"><span class="hint-key">W/S</span> thrust</div>
+  <div class="hint-item"><span class="hint-key">A/D</span> spin</div>
+  <div class="hint-item"><span class="hint-key">SPACE / CLICK</span> shoot</div>
+  <div class="hint-item"><span class="hint-key">ESC</span> close</div>
 </div>
 
 <!-- INFO PANEL -->
@@ -232,6 +274,12 @@
     <button class="af-replay" id="replayBtn">Play Again ↺</button>
   </div>
 </div>
+
+<!-- MOBILE JOYSTICK -->
+<div id="joy-zone">
+  <div id="joy-base"><div id="joy-thumb"></div></div>
+</div>
+<button id="fire-btn">FIRE</button>
 
 <canvas id="gameCanvas"></canvas>
 
@@ -370,7 +418,9 @@ let meteors = [];
 let particles = [];
 let stars = [];
 let keys = {};
-let mouse = { x: 0, y: 0 };
+let mouse = { x: 0, y: 0, moved: false };
+// Joystick virtual input (dx/dy in -1..1)
+const joy = { dx: 0, dy: 0 };
 
 // ─────────────────────────────────────────
 // BUILD WORLD
@@ -447,7 +497,7 @@ document.addEventListener('keydown', e => {
   if (e.code === 'Escape' && panelOpen) closePanel();
 });
 document.addEventListener('keyup', e => { keys[e.code] = false; });
-document.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+document.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; mouse.moved = true; });
 canvas.addEventListener('click', e => {
   if (gameRunning && !panelOpen) { mouse.x = e.clientX; mouse.y = e.clientY; fire(); }
 });
@@ -459,7 +509,10 @@ function fire() {
   const now = Date.now();
   if (now - lastShot < 140) return;
   lastShot = now;
-  const ang = Math.atan2(mouse.y - ship.y, mouse.x - ship.x);
+  // If mouse hasn't moved (mobile), fire in ship's facing direction
+  const ang = mouse.moved
+    ? Math.atan2(mouse.y - ship.y, mouse.x - ship.x)
+    : ship.angle;
   const spd = 10;
   bullets.push({
     x: ship.x + Math.cos(ang) * 20,
@@ -536,14 +589,18 @@ function update() {
   if (!gameRunning || panelOpen) return;
   ticks++;
 
-  // Ship aims at mouse
-  ship.angle = Math.atan2(mouse.y - ship.y, mouse.x - ship.x);
+  // A/D rotate ship, W/S thrust (Asteroids-style)
+  const rotSpd = 0.048;
+  if (keys['KeyA'] || keys['ArrowLeft'])  ship.angle -= rotSpd;
+  if (keys['KeyD'] || keys['ArrowRight']) ship.angle += rotSpd;
+  // Joystick rotation
+  ship.angle += joy.dx * rotSpd * 1.4;
 
-  const acc = 0.19, friction = 0.955, maxSpd = 5;
-  if (keys['KeyW'] || keys['ArrowUp'])    ship.vy -= acc;
-  if (keys['KeyS'] || keys['ArrowDown'])  ship.vy += acc;
-  if (keys['KeyA'] || keys['ArrowLeft'])  ship.vx -= acc;
-  if (keys['KeyD'] || keys['ArrowRight']) ship.vx += acc;
+  const acc = 0.22, friction = 0.955, maxSpd = 5;
+  const thrustFwd = keys['KeyW'] || keys['ArrowUp']   || joy.dy < -0.2;
+  const thrustBck = keys['KeyS'] || keys['ArrowDown']  || joy.dy >  0.2;
+  if (thrustFwd) { ship.vx += Math.cos(ship.angle) * acc * (joy.dy < -0.2 ? Math.abs(joy.dy) : 1); ship.vy += Math.sin(ship.angle) * acc * (joy.dy < -0.2 ? Math.abs(joy.dy) : 1); }
+  if (thrustBck) { ship.vx -= Math.cos(ship.angle) * acc * 0.5 * (joy.dy > 0.2 ? joy.dy : 1); ship.vy -= Math.sin(ship.angle) * acc * 0.5 * (joy.dy > 0.2 ? joy.dy : 1); }
 
   ship.vx *= friction; ship.vy *= friction;
   const spd = Math.hypot(ship.vx, ship.vy);
@@ -552,11 +609,10 @@ function update() {
   ship.x = ((ship.x % W) + W) % W;
   ship.y = ((ship.y % H) + H) % H;
 
-  // Thruster
-  const moving = keys['KeyW'] || keys['KeyS'] || keys['KeyA'] || keys['KeyD'] ||
-                 keys['ArrowUp'] || keys['ArrowDown'] || keys['ArrowLeft'] || keys['ArrowRight'];
-  if (moving && ticks % 2 === 0) {
-    const ea = ship.angle + Math.PI + (Math.random() - 0.5) * 0.55;
+  // Thruster exhaust
+  if ((thrustFwd || thrustBck) && ticks % 2 === 0) {
+    const exhaustDir = thrustFwd ? Math.PI : 0;
+    const ea = ship.angle + exhaustDir + (Math.random() - 0.5) * 0.55;
     const col = Math.random() > 0.5 ? '#f97316' : '#fcd34d';
     spawnParticle(
       ship.x - Math.cos(ship.angle) * 14, ship.y - Math.sin(ship.angle) * 14,
@@ -684,7 +740,7 @@ function draw() {
 
     // Label
     ctx.save();
-    ctx.font = 'bold 9.5px "Courier New", monospace';
+    ctx.font = 'bold 10px "Roboto Serif", serif';
     ctx.textAlign = 'center';
     ctx.fillStyle = m.color;
     ctx.globalAlpha = 0.8;
@@ -749,6 +805,67 @@ function drawShip() {
 
   ctx.restore();
 }
+
+// ─────────────────────────────────────────
+// MOBILE JOYSTICK
+// ─────────────────────────────────────────
+(function() {
+  const base  = document.getElementById('joy-base');
+  const thumb = document.getElementById('joy-thumb');
+  const R = 37; // max thumb travel radius
+  let touchId = null;
+  let originX = 0, originY = 0;
+
+  function getCenter() {
+    const r = base.getBoundingClientRect();
+    return { x: r.left + r.width/2, y: r.top + r.height/2 };
+  }
+
+  base.addEventListener('touchstart', e => {
+    e.preventDefault();
+    if (touchId !== null) return;
+    const t = e.changedTouches[0];
+    touchId = t.identifier;
+    const c = getCenter();
+    originX = c.x; originY = c.y;
+    updateThumb(t.clientX, t.clientY);
+  }, { passive: false });
+
+  document.addEventListener('touchmove', e => {
+    for (const t of e.changedTouches) {
+      if (t.identifier === touchId) {
+        e.preventDefault();
+        updateThumb(t.clientX, t.clientY);
+      }
+    }
+  }, { passive: false });
+
+  document.addEventListener('touchend', e => {
+    for (const t of e.changedTouches) {
+      if (t.identifier === touchId) {
+        touchId = null;
+        joy.dx = 0; joy.dy = 0;
+        thumb.style.transform = 'translate(-50%, -50%)';
+      }
+    }
+  });
+
+  function updateThumb(cx, cy) {
+    let dx = cx - originX;
+    let dy = cy - originY;
+    const dist = Math.hypot(dx, dy);
+    if (dist > R) { dx = dx/dist*R; dy = dy/dist*R; }
+    joy.dx = dx / R;
+    joy.dy = dy / R;
+    thumb.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+  }
+
+  // Fire button
+  document.getElementById('fire-btn').addEventListener('touchstart', e => {
+    e.preventDefault();
+    if (gameRunning && !panelOpen) fire();
+  }, { passive: false });
+})();
 
 // ─────────────────────────────────────────
 // LOOP
