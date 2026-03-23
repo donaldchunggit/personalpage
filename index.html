@@ -509,10 +509,7 @@ function fire() {
   const now = Date.now();
   if (now - lastShot < 140) return;
   lastShot = now;
-  // If mouse hasn't moved (mobile), fire in ship's facing direction
-  const ang = mouse.moved
-    ? Math.atan2(mouse.y - ship.y, mouse.x - ship.x)
-    : ship.angle;
+  const ang = ship.angle;
   const spd = 10;
   const noseX = ship.x + Math.cos(ship.angle) * 20;
   const noseY = ship.y + Math.sin(ship.angle) * 20;
