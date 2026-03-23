@@ -514,9 +514,10 @@ function fire() {
     ? Math.atan2(mouse.y - ship.y, mouse.x - ship.x)
     : ship.angle;
   const spd = 10;
+  const noseX = ship.x + Math.cos(ship.angle) * 20;
+  const noseY = ship.y + Math.sin(ship.angle) * 20;
   bullets.push({
-    x: ship.x + Math.cos(ang) * 20,
-    y: ship.y + Math.sin(ang) * 20,
+    x: noseX, y: noseY,
     vx: Math.cos(ang) * spd,
     vy: Math.sin(ang) * spd,
     ang, life: 1,
@@ -525,7 +526,7 @@ function fire() {
   for (let i = 0; i < 5; i++) {
     const a = ang + (Math.random() - 0.5) * 0.6;
     spawnParticle(
-      ship.x + Math.cos(ang) * 20, ship.y + Math.sin(ang) * 20,
+      noseX, noseY,
       Math.cos(a) * (2 + Math.random() * 3), Math.sin(a) * (2 + Math.random() * 3),
       '#a5f3fc', 0.18 + Math.random() * 0.15, 2 + Math.random() * 2
     );
