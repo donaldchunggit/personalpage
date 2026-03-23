@@ -6,885 +6,607 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Donald Chung — Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,300;0,8..144,400;0,8..144,500;0,8..144,600;0,8..144,700;1,8..144,400;1,8..144,600&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #f9f8f6;
+      --surface:  #ffffff;
+      --text:     #0f0f0f;
+      --muted:    #888;
+      --border:   #e8e5e0;
+      --accent:   #1a1a2e;
+      --cyan:     #00c2b3;
+      --cyan-lt:  #e0faf8;
+    }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      background: #050510;
-      color: white;
+      background: var(--bg);
+      color: var(--text);
       font-family: 'Roboto Serif', serif;
-      overflow: hidden;
-      height: 100vh;
-      width: 100vw;
-    }
-    canvas { display: block; position: fixed; top: 0; left: 0; }
-
-    /* ── HUD ── */
-    #hud {
-      position: fixed; top: 20px; left: 20px; z-index: 10; pointer-events: none;
-    }
-    #hud .hud-tag {
-      font-size: 11px; color: rgba(255,255,255,0.35); letter-spacing: 0.18em;
-      text-transform: uppercase; margin-bottom: 3px;
-    }
-    #hud .hud-name {
-      font-size: 20px; font-weight: bold; color: white; letter-spacing: 0.04em;
-    }
-    #score-display {
-      position: fixed; top: 20px; right: 20px; z-index: 10;
-      text-align: right; pointer-events: none;
-    }
-    #score-display .s-label { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 0.12em; text-transform: uppercase; }
-    #score-display .s-value { font-size: 26px; color: #a5f3fc; font-weight: bold; font-family: 'Roboto Serif', serif; }
-
-    /* ── CONTROLS HINT ── */
-    #controls-hint {
-      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-      z-index: 10; display: flex; gap: 20px; pointer-events: none;
-    }
-    .hint-item { display: flex; align-items: center; gap: 6px; font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; text-transform: uppercase; }
-    .hint-key {
-      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 4px; padding: 2px 7px; font-size: 9px; color: rgba(255,255,255,0.5);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
     }
 
-    /* ── PROGRESS ── */
-    #progress {
-      position: fixed; bottom: 20px; right: 20px; z-index: 10;
-      pointer-events: none; text-align: right;
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 52px;
+      background: rgba(249,248,246,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
     }
-    #progress .prog-label { font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
-    .prog-dot-row { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; justify-content: flex-end; }
-    .prog-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18);
-      transition: background 0.4s, box-shadow 0.4s;
+    .nav-logo {
+      font-size: 17px; font-weight: 600; font-style: italic;
+      color: var(--text); text-decoration: none; letter-spacing: -0.01em;
     }
-    .prog-dot.hit { background: #a5f3fc; border-color: #a5f3fc; box-shadow: 0 0 6px #a5f3fc; }
-    .prog-name { font-size: 9px; color: rgba(255,255,255,0.25); letter-spacing: 0.05em; transition: color 0.4s; }
-    .prog-name.hit { color: #a5f3fc; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-size: 13px; font-weight: 400; color: var(--muted);
+      text-decoration: none; letter-spacing: 0.01em; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--text); color: var(--bg) !important;
+      padding: 8px 22px; border-radius: 999px; font-size: 13px !important;
+      font-weight: 500 !important; transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.78; }
 
-    /* ── INFO PANEL ── */
-    #info-panel {
-      position: fixed; top: 50%; left: 50%;
-      transform: translate(-50%, -50%) scale(0.88);
-      z-index: 100;
-      background: rgba(4, 4, 18, 0.97);
-      border: 1px solid rgba(165,243,252,0.25);
-      border-radius: 24px;
-      padding: 36px 40px;
-      max-width: 520px; width: 92%;
-      box-shadow: 0 0 80px rgba(165,243,252,0.1);
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      max-height: 90vh; overflow-y: auto;
+    /* ── HERO ── */
+    .hero-wrap {
+      min-height: 100vh; display: flex; flex-direction: column;
+      justify-content: center; padding: 140px 52px 100px;
+      max-width: 1100px; margin: 0 auto; position: relative;
     }
-    #info-panel.visible { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: all; }
-    #info-panel .p-category { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #a5f3fc; margin-bottom: 10px; }
-    #info-panel .p-title { font-size: 24px; font-weight: bold; color: white; margin-bottom: 14px; line-height: 1.2; font-family: 'Roboto Serif', serif; }
-    #info-panel .p-body { font-size: 13.5px; color: rgba(255,255,255,0.65); line-height: 1.8; margin-bottom: 18px; }
-    #info-panel .p-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 22px; }
-    #info-panel .p-tag {
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 12px; font-weight: 400; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--cyan); margin-bottom: 36px;
+    }
+    .hero-eyebrow::before {
+      content: ''; width: 28px; height: 1.5px; background: var(--cyan);
+    }
+    .hero h1 {
+      font-size: clamp(52px, 8.5vw, 112px); font-weight: 700;
+      line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 32px;
+    }
+    .hero h1 em { font-style: italic; font-weight: 400; color: var(--cyan); }
+    .hero-sub {
+      font-size: 18px; font-weight: 300; color: #555; max-width: 540px;
+      line-height: 1.8; margin-bottom: 52px;
+    }
+    .hero-sub strong { font-weight: 600; color: var(--text); }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-solid {
+      background: var(--text); color: var(--bg);
+      padding: 15px 36px; border-radius: 999px; font-size: 14px;
+      font-weight: 500; text-decoration: none; font-family: 'Roboto Serif', serif;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-solid:hover { opacity: 0.82; transform: translateY(-2px); }
+    .btn-outline {
+      border: 1.5px solid var(--border); background: transparent;
+      color: var(--text); padding: 14px 32px; border-radius: 999px;
+      font-size: 14px; font-weight: 400; text-decoration: none;
+      font-family: 'Roboto Serif', serif; transition: border-color 0.2s, transform 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--text); transform: translateY(-2px); }
+
+    /* hero stats ticker */
+    .hero-stats {
+      position: absolute; right: 52px; bottom: 80px;
+      display: flex; flex-direction: column; gap: 20px; text-align: right;
+    }
+    .hero-stat-num {
+      font-size: 28px; font-weight: 700; display: block; line-height: 1;
+    }
+    .hero-stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* ── SECTION BASE ── */
+    .section { padding: 110px 52px; max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--cyan); display: flex;
+      align-items: center; gap: 12px; margin-bottom: 56px;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .section-title {
+      font-size: clamp(32px, 4vw, 48px); font-weight: 700; letter-spacing: -0.025em;
+      margin-bottom: 16px; line-height: 1.1;
+    }
+    .section-title em { font-style: italic; font-weight: 400; }
+
+    /* ── PROJECTS ── */
+    .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+
+    .proj-card {
+      background: var(--surface); padding: 40px;
+      text-decoration: none; color: inherit; position: relative; overflow: hidden;
+      transition: background 0.25s;
+      border: 1px solid var(--border);
+    }
+    .proj-card:hover { background: var(--text); color: var(--bg); }
+    .proj-card:hover .proj-desc { color: rgba(255,255,255,0.6); }
+    .proj-card:hover .proj-tag { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); }
+    .proj-card:hover .proj-cat { color: var(--cyan); }
+    .proj-card:hover .proj-arrow { opacity: 1; transform: translate(4px,-4px); }
+
+    .proj-num {
+      font-size: 11px; font-weight: 400; color: var(--muted);
+      letter-spacing: 0.08em; margin-bottom: 28px; display: block;
+      transition: color 0.25s;
+    }
+    .proj-card:hover .proj-num { color: rgba(255,255,255,0.35); }
+    .proj-cat {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--cyan); margin-bottom: 10px;
+    }
+    .proj-title {
+      font-size: 22px; font-weight: 700; letter-spacing: -0.02em;
+      margin-bottom: 12px; line-height: 1.2;
+    }
+    .proj-desc {
+      font-size: 14px; color: #666; line-height: 1.75; margin-bottom: 24px;
+      font-weight: 300; transition: color 0.25s;
+    }
+    .proj-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+    .proj-tag {
       font-size: 11px; padding: 4px 12px; border-radius: 999px;
-      background: rgba(165,243,252,0.08); color: #a5f3fc;
-      border: 1px solid rgba(165,243,252,0.2);
+      background: var(--bg); color: #666; font-weight: 400;
+      transition: background 0.25s, color 0.25s;
     }
-    #info-panel .p-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-    .p-btn-link {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: #a5f3fc; color: #050510;
-      padding: 10px 22px; border-radius: 999px;
-      font-size: 12px; font-weight: bold; text-decoration: none;
-      font-family: 'Roboto Serif', serif; transition: opacity 0.2s;
+    .proj-arrow {
+      position: absolute; top: 40px; right: 40px;
+      font-size: 20px; opacity: 0.25; transition: opacity 0.25s, transform 0.25s;
     }
-    .p-btn-link:hover { opacity: 0.85; }
-    .p-btn-close {
-      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
-      color: rgba(255,255,255,0.7); padding: 10px 22px; border-radius: 999px;
-      font-size: 12px; cursor: pointer; font-family: 'Roboto Serif', serif;
-      letter-spacing: 0.04em; transition: background 0.2s;
-    }
-    .p-btn-close:hover { background: rgba(255,255,255,0.12); }
 
-    /* ── INTRO ── */
-    #intro {
-      position: fixed; inset: 0; z-index: 200;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      background: #050510; text-align: center; padding: 40px;
-    }
-    #intro .i-tag {
-      font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
-      color: rgba(165,243,252,0.6); margin-bottom: 28px;
-    }
-    #intro h1 {
-      font-size: clamp(40px, 7vw, 80px); font-weight: bold; color: white;
-      letter-spacing: -0.02em; margin-bottom: 10px; font-family: 'Roboto Serif', serif;
-    }
-    #intro h1 span { color: #a5f3fc; }
-    #intro .i-sub {
-      font-size: 15px; color: rgba(255,255,255,0.45); margin-bottom: 40px;
-      max-width: 420px; line-height: 1.75;
-    }
-    #intro .i-cards {
-      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
-      margin-bottom: 40px; max-width: 480px;
-    }
-    .i-card {
-      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px; padding: 10px 16px; font-size: 11px;
-      color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 8px;
-    }
-    .i-card-key {
-      background: rgba(165,243,252,0.12); border: 1px solid rgba(165,243,252,0.25);
-      color: #a5f3fc; border-radius: 5px; padding: 2px 8px; font-size: 10px;
-    }
-    #startBtn {
-      background: #a5f3fc; color: #050510; border: none;
-      padding: 16px 52px; border-radius: 999px;
-      font-size: 15px; font-weight: bold; cursor: pointer;
-      font-family: 'Roboto Serif', serif; letter-spacing: 0.06em;
-      transition: transform 0.2s, opacity 0.2s; box-shadow: 0 0 40px rgba(165,243,252,0.3);
-    }
-    #startBtn:hover { transform: translateY(-2px); opacity: 0.9; }
+    /* wide card spans both columns */
+    .proj-card.wide { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .proj-card.wide .proj-arrow { position: static; align-self: start; }
 
-    /* ── ALL FOUND ── */
-    #all-found {
-      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      z-index: 150; background: rgba(4,4,18,0.98);
-      border: 1px solid rgba(165,243,252,0.3); border-radius: 28px;
-      padding: 48px 52px; text-align: center; max-width: 480px; width: 92%;
-      display: none; box-shadow: 0 0 100px rgba(165,243,252,0.15);
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start;
     }
-    #all-found .af-rocket { font-size: 48px; margin-bottom: 16px; }
-    #all-found h2 { font-size: 28px; color: #a5f3fc; margin-bottom: 12px; font-family: 'Roboto Serif', serif; }
-    #all-found p { color: rgba(255,255,255,0.55); margin-bottom: 32px; font-size: 14px; line-height: 1.75; }
-    #all-found .af-links { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-    #all-found a {
-      padding: 12px 22px; border-radius: 999px; font-size: 12px; font-weight: bold;
-      text-decoration: none; font-family: 'Roboto Serif', serif; letter-spacing: 0.04em;
+    .about-img-wrap { position: sticky; top: 90px; }
+    .about-img {
+      width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: center top;
+      border-radius: 4px; display: block;
     }
-    #all-found a.af-primary { background: #a5f3fc; color: #050510; }
-    #all-found a.af-ghost { background: rgba(255,255,255,0.08); color: white; border: 1px solid rgba(255,255,255,0.18); }
-    #all-found .af-replay {
-      background: rgba(165,243,252,0.1); border: 1px solid rgba(165,243,252,0.25);
-      color: #a5f3fc; padding: 12px 22px; border-radius: 999px;
-      font-size: 12px; cursor: pointer; font-family: 'Roboto Serif', serif;
-      font-weight: bold; transition: background 0.2s;
+    .about-caption {
+      font-size: 11px; color: var(--muted); margin-top: 12px;
+      display: flex; align-items: center; gap: 5px;
     }
-    #all-found .af-replay:hover { background: rgba(165,243,252,0.2); }
+    .about-text h2 { font-size: 36px; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 20px; line-height: 1.15; }
+    .about-text h2 em { font-style: italic; font-weight: 400; color: var(--cyan); }
+    .about-text p { font-size: 15px; font-weight: 300; color: #555; line-height: 1.85; margin-bottom: 16px; }
+    .about-text p:last-of-type { margin-bottom: 28px; }
 
-    /* ── MOBILE JOYSTICK ── */
-    #joy-zone {
-      position: fixed; bottom: 36px; left: 36px; z-index: 20;
-      width: 120px; height: 120px;
-      display: none;
+    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
+    .chip {
+      font-size: 12px; padding: 6px 14px; border-radius: 999px;
+      border: 1px solid var(--border); color: #555; font-weight: 400;
+      background: var(--surface);
     }
-    #joy-base {
-      width: 120px; height: 120px; border-radius: 50%;
-      background: rgba(255,255,255,0.06);
-      border: 1.5px solid rgba(255,255,255,0.15);
-      position: relative; touch-action: none;
+
+    .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 8px; }
+    .stat-box {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 22px 24px;
     }
-    #joy-thumb {
-      width: 46px; height: 46px; border-radius: 50%;
-      background: rgba(165,243,252,0.25);
-      border: 1.5px solid rgba(165,243,252,0.5);
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      transition: background 0.1s;
-      pointer-events: none;
+    .stat-n { font-size: 30px; font-weight: 700; letter-spacing: -0.03em; display: block; }
+    .stat-l { font-size: 11px; font-weight: 300; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+
+    /* ── EXPERIENCE ── */
+    .exp-table { border-top: 1px solid var(--border); }
+    .exp-row {
+      display: grid; grid-template-columns: 1fr auto;
+      align-items: start; gap: 24px;
+      padding: 28px 0; border-bottom: 1px solid var(--border);
     }
-    #fire-btn {
-      position: fixed; bottom: 56px; right: 36px; z-index: 20;
-      width: 80px; height: 80px; border-radius: 50%;
-      background: rgba(165,243,252,0.15);
-      border: 1.5px solid rgba(165,243,252,0.4);
-      color: #a5f3fc; font-size: 12px; font-weight: 700;
-      font-family: 'Roboto Serif', serif; letter-spacing: 0.06em;
-      cursor: pointer; display: none;
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
+    .exp-role { font-size: 17px; font-weight: 600; margin-bottom: 3px; letter-spacing: -0.01em; }
+    .exp-company { font-size: 13px; color: var(--muted); font-weight: 300; }
+    .exp-date {
+      font-size: 11px; color: var(--muted); font-weight: 400;
+      background: var(--bg); border: 1px solid var(--border);
+      padding: 4px 14px; border-radius: 999px; white-space: nowrap;
     }
-    #fire-btn:active { background: rgba(165,243,252,0.35); }
-    @media (pointer: coarse) {
-      #joy-zone, #fire-btn { display: block; }
-      #controls-hint { display: none; }
+
+    /* ── SKILLS ── */
+    .skills-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; }
+    .skill-group {
+      background: var(--surface); border: 1px solid var(--border); padding: 28px;
+    }
+    .skill-group-title {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
+    }
+    .skill-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-chip {
+      font-size: 12px; font-weight: 400; padding: 5px 13px;
+      border-radius: 999px; background: var(--bg);
+      border: 1px solid var(--border); color: var(--text);
+    }
+
+    /* ── CONTACT ── */
+    .contact-block {
+      background: var(--text); color: var(--bg); border-radius: 4px;
+      padding: 72px 64px; display: grid; grid-template-columns: 1fr auto;
+      gap: 48px; align-items: center;
+    }
+    .contact-block h2 {
+      font-size: clamp(30px, 4vw, 46px); font-weight: 700; font-style: italic;
+      letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 14px;
+    }
+    .contact-block p { font-size: 15px; font-weight: 300; opacity: 0.55; max-width: 420px; line-height: 1.75; }
+    .contact-links { display: flex; flex-direction: column; gap: 10px; min-width: 180px; }
+    .c-btn {
+      padding: 13px 26px; border-radius: 999px; font-size: 13px; font-weight: 500;
+      text-decoration: none; text-align: center; white-space: nowrap;
+      font-family: 'Roboto Serif', serif; transition: opacity 0.2s, transform 0.2s;
+      display: block;
+    }
+    .c-btn:hover { opacity: 0.82; transform: translateY(-1px); }
+    .c-btn.light { background: var(--bg); color: var(--text); }
+    .c-btn.ghost { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.18); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 36px; font-size: 12px;
+      color: var(--muted); border-top: 1px solid var(--border);
+      font-weight: 300;
+    }
+
+    /* ── DIVIDER ── */
+    .full-border { border-top: 1px solid var(--border); }
+
+    /* ── FADE IN ── */
+    .fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 820px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero-wrap { padding: 120px 24px 80px; }
+      .hero-stats { display: none; }
+      .section { padding: 72px 24px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .proj-card.wide { grid-column: span 1; grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-img-wrap { position: static; }
+      .about-img { max-height: 340px; }
+      .skills-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .contact-block { grid-template-columns: 1fr; padding: 44px 28px; }
+      .contact-links { flex-direction: row; flex-wrap: wrap; }
     }
   </style>
 </head>
 <body>
 
-<!-- INTRO -->
-<div id="intro">
-  <div class="i-tag">∗ portfolio · donald chung · sydney ∗</div>
-  <h1>SHOOT THE<br/><span>METEORS</span></h1>
-  <p class="i-sub">Fly through space and shoot meteors to discover who I am as a developer. Each meteor holds a secret.</p>
-  <div class="i-cards">
-    <div class="i-card"><span class="i-card-key">W / S</span> thrust forward / back</div>
-    <div class="i-card"><span class="i-card-key">A / D</span> spin ship</div>
-    <div class="i-card"><span class="i-card-key">SPACE</span> shoot</div>
-    <div class="i-card"><span class="i-card-key">MOUSE</span> aim &amp; click to fire</div>
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">donald chung</a>
+  <ul class="nav-links">
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#about">about</a></li>
+    <li><a href="#experience">experience</a></li>
+    <li><a href="#contact" class="nav-cta">say hello →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero-wrap">
+  <div class="hero-eyebrow">Computer Engineering · UNSW · Sydney</div>
+  <h1>Donald<br/><em>Chung.</em></h1>
+  <p class="hero-sub">
+    I design <strong>and</strong> build — end-to-end. Real products,
+    shipped to real users. Not mockups.
+  </p>
+  <div class="hero-btns">
+    <a href="#projects" class="btn-solid">see my work ↓</a>
+    <a href="Donald-Chung.pdf" download class="btn-outline">download résumé</a>
   </div>
-  <button id="startBtn">LAUNCH →</button>
-</div>
 
-<!-- HUD -->
-<div id="hud">
-  <div class="hud-tag">∗ exploring</div>
-  <div class="hud-name">Donald Chung</div>
-</div>
-<div id="score-display">
-  <div class="s-label">discovered</div>
-  <div class="s-value" id="scoreVal">0 / 9</div>
-</div>
-
-<!-- PROGRESS -->
-<div id="progress">
-  <div class="prog-label">discoveries</div>
-  <div id="progItems"></div>
-</div>
-
-<!-- CONTROLS -->
-<div id="controls-hint">
-  <div class="hint-item"><span class="hint-key">W/S</span> thrust</div>
-  <div class="hint-item"><span class="hint-key">A/D</span> spin</div>
-  <div class="hint-item"><span class="hint-key">SPACE / CLICK</span> shoot</div>
-  <div class="hint-item"><span class="hint-key">ESC</span> close</div>
-</div>
-
-<!-- INFO PANEL -->
-<div id="info-panel">
-  <div class="p-category" id="pCat"></div>
-  <div class="p-title" id="pTitle"></div>
-  <div class="p-body" id="pBody"></div>
-  <div class="p-tags" id="pTags"></div>
-  <div class="p-actions" id="pActions"></div>
-</div>
-
-<!-- ALL FOUND -->
-<div id="all-found">
-  <div class="af-rocket">🚀</div>
-  <h2>MISSION COMPLETE</h2>
-  <p>You've discovered everything about Donald Chung. Now you know who he is — let's connect.</p>
-  <div class="af-links">
-    <a href="https://linkedin.com/in/donald-chung-45229b350" target="_blank" class="af-primary">LinkedIn ↗</a>
-    <a href="https://github.com/donaldchunggit" target="_blank" class="af-ghost">GitHub ↗</a>
-    <a href="Donald-Chung.pdf" download class="af-ghost">Résumé ↓</a>
-    <button class="af-replay" id="replayBtn">Play Again ↺</button>
+  <div class="hero-stats">
+    <div>
+      <span class="hero-stat-num">110k</span>
+      <div class="hero-stat-label">monthly viewers</div>
+    </div>
+    <div>
+      <span class="hero-stat-num">$100k</span>
+      <div class="hero-stat-label">revenue led in 2 months</div>
+    </div>
+    <div>
+      <span class="hero-stat-num">5+</span>
+      <div class="hero-stat-label">shipped projects</div>
+    </div>
   </div>
 </div>
 
-<!-- MOBILE JOYSTICK -->
-<div id="joy-zone">
-  <div id="joy-base"><div id="joy-thumb"></div></div>
-</div>
-<button id="fire-btn">FIRE</button>
+<div class="full-border"></div>
 
-<canvas id="gameCanvas"></canvas>
+<!-- PROJECTS -->
+<section id="projects" class="section">
+  <div class="section-label">Selected Projects</div>
+  <div class="projects-grid">
+
+    <a href="https://github.com/donaldchunggit/WhatStillOpenSydney" target="_blank" class="proj-card fade-up">
+      <span class="proj-num">01</span>
+      <div class="proj-cat">Consumer App · Live</div>
+      <div class="proj-title">What's Still Open Sydney</div>
+      <div class="proj-arrow">↗</div>
+      <p class="proj-desc">A late-night activity finder for Sydney — every restaurant, bar, and venue open right now, with real-time countdowns and a "Plan My Night" AI feature.</p>
+      <div class="proj-tags">
+        <span class="proj-tag">Next.js</span>
+        <span class="proj-tag">TypeScript</span>
+        <span class="proj-tag">Google Places API</span>
+        <span class="proj-tag">Vercel</span>
+      </div>
+    </a>
+
+    <a href="https://github.com/donaldchunggit/stockkeephelper" target="_blank" class="proj-card fade-up">
+      <span class="proj-num">02</span>
+      <div class="proj-cat">Internal Tool · Production</div>
+      <div class="proj-title">Snap Ops — Retail Dashboard</div>
+      <div class="proj-arrow">↗</div>
+      <p class="proj-desc">Internal operations dashboard for a real retail business. Inventory, orders, tracking, and low-stock alerts — powered by Supabase as the backend, replacing spreadsheets entirely. Real users, in production.</p>
+      <div class="proj-tags">
+        <span class="proj-tag">Next.js</span>
+        <span class="proj-tag">Supabase</span>
+        <span class="proj-tag">Express</span>
+        <span class="proj-tag">Dashboard UI</span>
+      </div>
+    </a>
+
+    <a href="https://github.com/chunyin7/wingman" target="_blank" class="proj-card fade-up">
+      <span class="proj-num">03</span>
+      <div class="proj-cat">Hackathon · Unihack 2026</div>
+      <div class="proj-title">Wingman — AI Social Coach</div>
+      <div class="proj-arrow">↗</div>
+      <p class="proj-desc">"Duolingo for social anxiety." AI-powered rehearsal coach — scenario-based chat, voice interactions, XP streaks, gamified skill roadmap.</p>
+      <div class="proj-tags">
+        <span class="proj-tag">Next.js</span>
+        <span class="proj-tag">OpenAI</span>
+        <span class="proj-tag">Supabase</span>
+        <span class="proj-tag">Tailwind CSS</span>
+      </div>
+    </a>
+
+    <a href="https://github.com/donaldchunggit/FEAdestroyer" target="_blank" class="proj-card fade-up">
+      <span class="proj-num">04</span>
+      <div class="proj-cat">ML / Engineering · Research</div>
+      <div class="proj-title">FEA Destroyer</div>
+      <div class="proj-arrow">↗</div>
+      <p class="proj-desc">Physics-informed ML surrogate for 2D truss bridge design. Predicts stress and deflection from geometry — orders of magnitude faster than traditional FEA.</p>
+      <div class="proj-tags">
+        <span class="proj-tag">Python</span>
+        <span class="proj-tag">Machine Learning</span>
+        <span class="proj-tag">FEM</span>
+        <span class="proj-tag">NumPy</span>
+      </div>
+    </a>
+
+    <a href="https://github.com/donaldchunggit" target="_blank" class="proj-card wide fade-up">
+      <div>
+        <span class="proj-num">05</span>
+        <div class="proj-cat">Backend · API Design</div>
+        <div class="proj-title">Quiz Platform Backend</div>
+        <p class="proj-desc">Production-style REST API inspired by Kahoot. Full authentication & session management, quiz and question CRUD, TypeScript with strict typing, and integration tests throughout.</p>
+      </div>
+      <div>
+        <div class="proj-tags" style="margin-bottom:28px;">
+          <span class="proj-tag">TypeScript</span>
+          <span class="proj-tag">Node.js</span>
+          <span class="proj-tag">REST API</span>
+          <span class="proj-tag">Testing</span>
+          <span class="proj-tag">Auth</span>
+        </div>
+        <div class="proj-arrow" style="font-size:18px; opacity:0.3;">↗</div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<div class="full-border"></div>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+  <div class="section-label">About Me</div>
+  <div class="about-grid">
+    <div class="about-img-wrap fade-up">
+      <img src="photos/donald_chung.jpg" alt="Donald Chung" class="about-img" />
+      <p class="about-caption">📍 Sydney, Australia</p>
+    </div>
+    <div>
+      <div class="about-text fade-up">
+        <h2>Designer who <em>actually</em> ships code.</h2>
+        <p>I'm a Computer Engineering student at UNSW with a rare combination: I care deeply about how things look and feel — and I can build them end-to-end. My projects aren't mockups — they're live, deployed, and used by real people.</p>
+        <p>Outside of code, I'm Events Director at UNSW Golf Society, ex state rower, violin player, and I've grown a business to 110k monthly viewers while managing a team of artists.</p>
+      </div>
+      <div class="chip-row fade-up">
+        <span class="chip">🧗 Bouldering</span>
+        <span class="chip">📈 Financial Markets</span>
+        <span class="chip">🎮 Riot Games Society</span>
+        <span class="chip">🎻 Violin</span>
+        <span class="chip">⛳ UNSW Golf Society</span>
+      </div>
+      <div class="stats-row fade-up">
+        <div class="stat-box">
+          <span class="stat-n">110k</span>
+          <div class="stat-l">monthly viewers grown at Ruggy Ducky Studios</div>
+        </div>
+        <div class="stat-box">
+          <span class="stat-n">$100k</span>
+          <div class="stat-l">revenue led within 2 months at Snap Wireless</div>
+        </div>
+        <div class="stat-box">
+          <span class="stat-n">40%</span>
+          <div class="stat-l">avg student grade improvement as tutor</div>
+        </div>
+        <div class="stat-box">
+          <span class="stat-n">5+</span>
+          <div class="stat-l">shipped projects on GitHub</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="full-border"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="section">
+  <div class="section-label">Experience</div>
+  <div class="exp-table fade-up">
+    <div class="exp-row">
+      <div>
+        <div class="exp-role">Manager &amp; Lead Sales</div>
+        <div class="exp-company">Snap Wireless · Sydney</div>
+      </div>
+      <span class="exp-date">Nov 2025 – Present</span>
+    </div>
+    <div class="exp-row">
+      <div>
+        <div class="exp-role">Founder</div>
+        <div class="exp-company">Ruggy Ducky Studios · Sydney</div>
+      </div>
+      <span class="exp-date">Feb 2025 – Present</span>
+    </div>
+    <div class="exp-row">
+      <div>
+        <div class="exp-role">Physics, Maths &amp; Biology Tutor</div>
+        <div class="exp-company">Tuita Tutoring · Sydney</div>
+      </div>
+      <span class="exp-date">Jan 2025 – Jan 2026</span>
+    </div>
+    <div class="exp-row">
+      <div>
+        <div class="exp-role">Photobooth Assistant</div>
+        <div class="exp-company">Happy Cap Studios · Sydney</div>
+      </div>
+      <span class="exp-date">Sep 2024 – Present</span>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:60px;">Education</div>
+  <div class="exp-table fade-up">
+    <div class="exp-row">
+      <div>
+        <div class="exp-role">Bachelor of Computer Engineering (Honours)</div>
+        <div class="exp-company">University of New South Wales (UNSW) · Credit WAM</div>
+      </div>
+      <span class="exp-date">2024 – 2028</span>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:60px;">Skills</div>
+  <div class="skills-grid fade-up">
+    <div class="skill-group">
+      <div class="skill-group-title">Languages</div>
+      <div class="skill-chips">
+        <span class="skill-chip">TypeScript</span>
+        <span class="skill-chip">Python</span>
+        <span class="skill-chip">C</span>
+        <span class="skill-chip">JavaScript</span>
+        <span class="skill-chip">Assembly</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Frontend</div>
+      <div class="skill-chips">
+        <span class="skill-chip">Next.js</span>
+        <span class="skill-chip">React</span>
+        <span class="skill-chip">HTML/CSS</span>
+        <span class="skill-chip">UI/UX Design</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Backend &amp; Tools</div>
+      <div class="skill-chips">
+        <span class="skill-chip">Node.js</span>
+        <span class="skill-chip">Express</span>
+        <span class="skill-chip">REST APIs</span>
+        <span class="skill-chip">Supabase</span>
+        <span class="skill-chip">SQLite</span>
+        <span class="skill-chip">Git</span>
+        <span class="skill-chip">Linux</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">AI &amp; LLMs</div>
+      <div class="skill-chips">
+        <span class="skill-chip">Claude (Anthropic)</span>
+        <span class="skill-chip">GPT-4o</span>
+        <span class="skill-chip">Gemini</span>
+        <span class="skill-chip">OpenAI API</span>
+        <span class="skill-chip">Prompt Engineering</span>
+        <span class="skill-chip">AI Integration</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="full-border"></div>
+
+<!-- CONTACT -->
+<section id="contact" class="section">
+  <div class="contact-block fade-up">
+    <div>
+      <h2>Let's work<br/>together.</h2>
+      <p>Open to product design, UX, and design engineering roles. Sydney-based and available now.</p>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:donaldchung.work@gmail.com" class="c-btn light">email me ↗</a>
+      <a href="https://linkedin.com/in/donald-chung-45229b350" target="_blank" class="c-btn ghost">LinkedIn ↗</a>
+      <a href="https://github.com/donaldchunggit" target="_blank" class="c-btn ghost">GitHub ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  built &amp; designed by donald chung · 2026 · sydney, australia
+</footer>
 
 <script>
-// ─────────────────────────────────────────
-// METEOR DATA (all portfolio content)
-// ─────────────────────────────────────────
-const METEOR_DATA = [
-  {
-    id: 'about',
-    label: '★ ABOUT ME',
-    category: 'Identity',
-    title: 'Donald Chung',
-    body: 'Computer Engineering student at UNSW (2024–2028, Credit WAM). I have a rare combo: I care deeply about how things look and feel — and I can build them end-to-end.\n\nMy projects aren\'t mockups — they\'re live, deployed, and used by real people.\n\nOutside code: Events Director at UNSW Golf Society, ex state rower, cmus violin player, and I\'ve grown a business to 110k monthly viewers.',
-    tags: ['UNSW CompEng', 'Sydney, Australia', '110k Monthly Viewers', 'Ex State Rower', 'Violin Player'],
-    link: null,
-    color: '#f472b6',
-    size: 58,
-  },
-  {
-    id: 'whatstillopen',
-    label: "WHAT'S STILL OPEN",
-    category: 'Project · Consumer App · Live',
-    title: "What's Still Open Sydney",
-    body: 'A late-night activity finder for Sydney — shows every restaurant, bar, and venue open right now, with real-time countdowns, geolocation search, and a "Plan My Night" AI feature that curates a full evening in one tap.',
-    tags: ['Next.js', 'TypeScript', 'Google Places API', 'Vercel', 'AI Planning'],
-    link: 'https://github.com/donaldchunggit/WhatStillOpenSydney',
-    color: '#fb923c',
-    size: 52,
-  },
-  {
-    id: 'snapops',
-    label: 'SNAP OPS',
-    category: 'Project · Internal Tool · Production',
-    title: 'Snap Ops — Retail Dashboard',
-    body: 'Internal operations dashboard for a real retail business I manage. Handles inventory, orders, tracking, and low-stock alerts — replacing spreadsheets entirely. Real users, in production.',
-    tags: ['Next.js', 'Express', 'SQLite', 'Dashboard UI', 'Real Users'],
-    link: 'https://github.com/donaldchunggit/stockkeephelper',
-    color: '#60a5fa',
-    size: 48,
-  },
-  {
-    id: 'fea',
-    label: 'FEA DESTROYER',
-    category: 'Project · ML / Engineering · Research',
-    title: 'FEA Destroyer',
-    body: 'Physics-informed ML surrogate for 2D truss bridge design. Uses a matrix-stiffness FEM solver to generate training data, then trains models to predict stress and deflection from geometry alone — orders of magnitude faster than traditional FEA.',
-    tags: ['Python', 'Machine Learning', 'FEM', 'NumPy', 'Research'],
-    link: 'https://github.com/donaldchunggit/FEAdestroyer',
-    color: '#4ade80',
-    size: 50,
-  },
-  {
-    id: 'wingman',
-    label: 'WINGMAN AI',
-    category: 'Project · Hackathon · Unihack 2026',
-    title: 'Wingman — AI Social Coach',
-    body: '"Duolingo for social anxiety." An AI-powered rehearsal coach that lets you practice real conversations before they happen — scenario-based chat, voice interactions, daily challenges, XP streaks, and a gamified skill roadmap.',
-    tags: ['Next.js', 'TypeScript', 'OpenAI', 'Supabase', 'Tailwind CSS'],
-    link: 'https://github.com/chunyin7/wingman',
-    color: '#a78bfa',
-    size: 54,
-  },
-  {
-    id: 'quiz',
-    label: 'QUIZ BACKEND',
-    category: 'Project · Backend · API Design',
-    title: 'Quiz Platform Backend',
-    body: 'Production-style REST API inspired by Kahoot. Full authentication & session management, quiz and question CRUD, TypeScript migration with strict typing, persistent storage, and integration tests throughout.',
-    tags: ['TypeScript', 'Node.js', 'REST API', 'Testing', 'Auth'],
-    link: 'https://github.com/donaldchunggit',
-    color: '#fbbf24',
-    size: 44,
-  },
-  {
-    id: 'skills',
-    label: '⚡ SKILLS',
-    category: 'Technical Stack',
-    title: 'Tech I Work With',
-    body: 'Languages:\nTypeScript · Python · C · JavaScript · Assembly\n\nFrontend:\nNext.js · React · HTML/CSS · UI/UX Design\n\nBackend & Tools:\nNode.js · Express · REST APIs · SQLite · Git · Linux',
-    tags: ['TypeScript', 'Python', 'Next.js', 'React', 'Node.js', 'Git', 'Linux', 'C'],
-    link: null,
-    color: '#34d399',
-    size: 56,
-  },
-  {
-    id: 'experience',
-    label: '◆ EXPERIENCE',
-    category: 'Work Experience',
-    title: 'Where I\'ve Worked',
-    body: '▸ Manager & Lead Sales — Snap Wireless (Nov 2025–Present)\n  Led $100k revenue within 2 months.\n\n▸ Founder — Ruggy Ducky Studios (Feb 2025–Present)\n  Grew to 110k monthly viewers, managing a team of artists.\n\n▸ Physics, Maths & Biology Tutor — Tuita Tutoring\n  Average 40% student grade improvement.\n\n▸ Photobooth Assistant — Happy Cap Studios (Sep 2024–Present)',
-    tags: ['Snap Wireless', 'Ruggy Ducky Studios', 'Tuita Tutoring', 'Happy Cap Studios'],
-    link: null,
-    color: '#f87171',
-    size: 52,
-  },
-  {
-    id: 'contact',
-    label: '✉ CONTACT',
-    category: 'Get In Touch',
-    title: "Let's Work Together",
-    body: 'Open to product design, UX, and design engineering roles.\n\nI make real products that solve real problems — then ship them. If that\'s the kind of person you want on your team, let\'s talk.\n\nSydney-based. Available now.',
-    tags: ['Open to Work', 'Sydney-based', 'Product Design', 'Design Engineering'],
-    link: 'https://linkedin.com/in/donald-chung-45229b350',
-    color: '#a5f3fc',
-    size: 50,
-  },
-];
-
-// ─────────────────────────────────────────
-// CANVAS SETUP
-// ─────────────────────────────────────────
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-let W = window.innerWidth, H = window.innerHeight;
-canvas.width = W; canvas.height = H;
-
-window.addEventListener('resize', () => {
-  W = window.innerWidth; H = window.innerHeight;
-  canvas.width = W; canvas.height = H;
-  buildStars();
-});
-
-// ─────────────────────────────────────────
-// GAME STATE
-// ─────────────────────────────────────────
-let gameRunning = false;
-let panelOpen = false;
-let discoveredCount = 0;
-let ticks = 0;
-let lastShot = 0;
-
-let ship = { x: 0, y: 0, angle: 0, vx: 0, vy: 0 };
-let bullets = [];
-let meteors = [];
-let particles = [];
-let stars = [];
-let keys = {};
-let mouse = { x: 0, y: 0, moved: false };
-// Joystick virtual input (dx/dy in -1..1)
-const joy = { dx: 0, dy: 0 };
-
-// ─────────────────────────────────────────
-// BUILD WORLD
-// ─────────────────────────────────────────
-function buildStars() {
-  stars = [];
-  for (let i = 0; i < 220; i++) {
-    stars.push({
-      x: Math.random() * W, y: Math.random() * H,
-      r: Math.random() * 1.6 + 0.2,
-      bri: Math.random(),
-      spd: Math.random() * 0.018 + 0.004,
-      off: Math.random() * Math.PI * 2,
-    });
-  }
-}
-
-function buildMeteors() {
-  meteors = [];
-  const margin = 130;
-  METEOR_DATA.forEach((d, i) => {
-    let x, y, attempts = 0;
-    do {
-      x = margin + Math.random() * (W - 2 * margin);
-      y = margin + Math.random() * (H - 2 * margin);
-      attempts++;
-    } while (Math.hypot(x - W/2, y - H/2) < 170 && attempts < 50);
-
-    const ang = Math.random() * Math.PI * 2;
-    const spd = 0.18 + Math.random() * 0.38;
-
-    meteors.push({
-      ...d, x, y,
-      vx: Math.cos(ang) * spd,
-      vy: Math.sin(ang) * spd,
-      rot: Math.random() * Math.PI * 2,
-      rotSpd: (Math.random() - 0.5) * 0.007,
-      hit: false,
-      pulseOff: Math.random() * Math.PI * 2,
-    });
-  });
-}
-
-function buildProgressUI() {
-  const el = document.getElementById('progItems');
-  el.innerHTML = '';
-  METEOR_DATA.forEach(d => {
-    const row = document.createElement('div');
-    row.className = 'prog-dot-row';
-    const name = document.createElement('span');
-    name.className = 'prog-name'; name.id = 'pn-' + d.id;
-    name.textContent = d.label;
-    const dot = document.createElement('div');
-    dot.className = 'prog-dot'; dot.id = 'pd-' + d.id;
-    row.appendChild(name); row.appendChild(dot);
-    el.appendChild(row);
-  });
-}
-
-function initGame() {
-  ship = { x: W/2, y: H/2, angle: -Math.PI/2, vx: 0, vy: 0 };
-  bullets = []; particles = [];
-  discoveredCount = 0;
-  document.getElementById('scoreVal').textContent = `0 / ${METEOR_DATA.length}`;
-  buildStars(); buildMeteors(); buildProgressUI();
-}
-
-// ─────────────────────────────────────────
-// INPUT
-// ─────────────────────────────────────────
-document.addEventListener('keydown', e => {
-  keys[e.code] = true;
-  if (e.code === 'Space') { e.preventDefault(); if (gameRunning && !panelOpen) fire(); }
-  if (e.code === 'Escape' && panelOpen) closePanel();
-});
-document.addEventListener('keyup', e => { keys[e.code] = false; });
-document.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; mouse.moved = true; });
-canvas.addEventListener('click', e => {
-  if (gameRunning && !panelOpen) { mouse.x = e.clientX; mouse.y = e.clientY; fire(); }
-});
-
-// ─────────────────────────────────────────
-// FIRE
-// ─────────────────────────────────────────
-function fire() {
-  const now = Date.now();
-  if (now - lastShot < 140) return;
-  lastShot = now;
-  const ang = ship.angle;
-  const spd = 10;
-  const noseX = ship.x + Math.cos(ship.angle) * 20;
-  const noseY = ship.y + Math.sin(ship.angle) * 20;
-  bullets.push({
-    x: noseX, y: noseY,
-    vx: Math.cos(ang) * spd,
-    vy: Math.sin(ang) * spd,
-    ang, life: 1,
-  });
-  // muzzle flash
-  for (let i = 0; i < 5; i++) {
-    const a = ang + (Math.random() - 0.5) * 0.6;
-    spawnParticle(
-      noseX, noseY,
-      Math.cos(a) * (2 + Math.random() * 3), Math.sin(a) * (2 + Math.random() * 3),
-      '#a5f3fc', 0.18 + Math.random() * 0.15, 2 + Math.random() * 2
-    );
-  }
-}
-
-// ─────────────────────────────────────────
-// PARTICLES
-// ─────────────────────────────────────────
-function spawnParticle(x, y, vx, vy, color, maxLife, size, shard) {
-  particles.push({ x, y, vx, vy, color, maxLife, size, life: 1, shard: !!shard });
-}
-
-function explode(x, y, color) {
-  for (let i = 0; i < 45; i++) {
-    const a = Math.random() * Math.PI * 2, s = 1.5 + Math.random() * 5;
-    spawnParticle(x, y, Math.cos(a)*s, Math.sin(a)*s, color, 0.55 + Math.random()*0.7, 2 + Math.random()*3.5);
-  }
-  for (let i = 0; i < 14; i++) {
-    const a = Math.random() * Math.PI * 2, s = 0.4 + Math.random() * 2.5;
-    spawnParticle(x, y, Math.cos(a)*s, Math.sin(a)*s, '#666677', 1 + Math.random()*0.6, 3 + Math.random()*5, true);
-  }
-}
-
-// ─────────────────────────────────────────
-// PANEL
-// ─────────────────────────────────────────
-function openPanel(m) {
-  panelOpen = true;
-  document.getElementById('pCat').textContent = m.category;
-  document.getElementById('pTitle').textContent = m.title;
-  document.getElementById('pBody').innerHTML = m.body.replace(/\n/g, '<br>');
-
-  const tagsEl = document.getElementById('pTags');
-  tagsEl.innerHTML = m.tags.map(t => `<span class="p-tag">${t}</span>`).join('');
-
-  let actions = '';
-  if (m.link) actions += `<a href="${m.link}" target="_blank" class="p-btn-link">View on GitHub ↗</a>`;
-  if (m.id === 'contact') actions += `<a href="https://linkedin.com/in/donald-chung-45229b350" target="_blank" class="p-btn-link">Connect ↗</a>`;
-  actions += `<button class="p-btn-close" onclick="closePanel()">Continue Exploring →</button>`;
-  document.getElementById('pActions').innerHTML = actions;
-
-  const panel = document.getElementById('info-panel');
-  panel.style.borderColor = m.color + '44';
-  panel.style.boxShadow = `0 0 80px ${m.color}18, 0 0 160px ${m.color}0a`;
-  panel.classList.add('visible');
-}
-
-function closePanel() {
-  panelOpen = false;
-  document.getElementById('info-panel').classList.remove('visible');
-  if (discoveredCount === METEOR_DATA.length) {
-    setTimeout(() => { document.getElementById('all-found').style.display = 'block'; }, 700);
-  }
-}
-
-// ─────────────────────────────────────────
-// UPDATE
-// ─────────────────────────────────────────
-function update() {
-  if (!gameRunning || panelOpen) return;
-  ticks++;
-
-  // A/D rotate ship, W/S thrust (Asteroids-style)
-  const rotSpd = 0.048;
-  if (keys['KeyA'] || keys['ArrowLeft'])  ship.angle -= rotSpd;
-  if (keys['KeyD'] || keys['ArrowRight']) ship.angle += rotSpd;
-  // Joystick rotation
-  ship.angle += joy.dx * rotSpd * 1.4;
-
-  const acc = 0.22, friction = 0.955, maxSpd = 5;
-  const thrustFwd = keys['KeyW'] || keys['ArrowUp']   || joy.dy < -0.2;
-  const thrustBck = keys['KeyS'] || keys['ArrowDown']  || joy.dy >  0.2;
-  if (thrustFwd) { ship.vx += Math.cos(ship.angle) * acc * (joy.dy < -0.2 ? Math.abs(joy.dy) : 1); ship.vy += Math.sin(ship.angle) * acc * (joy.dy < -0.2 ? Math.abs(joy.dy) : 1); }
-  if (thrustBck) { ship.vx -= Math.cos(ship.angle) * acc * 0.5 * (joy.dy > 0.2 ? joy.dy : 1); ship.vy -= Math.sin(ship.angle) * acc * 0.5 * (joy.dy > 0.2 ? joy.dy : 1); }
-
-  ship.vx *= friction; ship.vy *= friction;
-  const spd = Math.hypot(ship.vx, ship.vy);
-  if (spd > maxSpd) { ship.vx = (ship.vx/spd)*maxSpd; ship.vy = (ship.vy/spd)*maxSpd; }
-  ship.x += ship.vx; ship.y += ship.vy;
-  ship.x = ((ship.x % W) + W) % W;
-  ship.y = ((ship.y % H) + H) % H;
-
-  // Thruster exhaust
-  if ((thrustFwd || thrustBck) && ticks % 2 === 0) {
-    const exhaustDir = thrustFwd ? Math.PI : 0;
-    const ea = ship.angle + exhaustDir + (Math.random() - 0.5) * 0.55;
-    const col = Math.random() > 0.5 ? '#f97316' : '#fcd34d';
-    spawnParticle(
-      ship.x - Math.cos(ship.angle) * 14, ship.y - Math.sin(ship.angle) * 14,
-      Math.cos(ea) * (1 + Math.random() * 1.6), Math.sin(ea) * (1 + Math.random() * 1.6),
-      col, 0.22 + Math.random() * 0.18, 2 + Math.random() * 2
-    );
-  }
-
-  // Bullets
-  bullets = bullets.filter(b => b.life > 0);
-  bullets.forEach(b => {
-    b.x += b.vx; b.y += b.vy;
-    b.life -= 0.013;
-    if (b.x < -20 || b.x > W+20 || b.y < -20 || b.y > H+20) b.life = 0;
-  });
-
-  // Meteors
-  meteors.forEach(m => {
-    if (m.hit) return;
-    m.x = ((m.x + m.vx) % W + W) % W;
-    m.y = ((m.y + m.vy) % H + H) % H;
-    m.rot += m.rotSpd;
-
-    bullets.forEach(b => {
-      if (b.life <= 0) return;
-      if (Math.hypot(b.x - m.x, b.y - m.y) < m.size * 0.9) {
-        b.life = 0; m.hit = true;
-        explode(m.x, m.y, m.color);
-        discoveredCount++;
-        document.getElementById('scoreVal').textContent = `${discoveredCount} / ${METEOR_DATA.length}`;
-        const dot = document.getElementById('pd-' + m.id);
-        const nm  = document.getElementById('pn-' + m.id);
-        if (dot) dot.classList.add('hit');
-        if (nm)  nm.classList.add('hit');
-        setTimeout(() => openPanel(m), 380);
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        observer.unobserve(e.target);
       }
     });
-  });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-  // Particles
-  particles.forEach(p => {
-    p.x += p.vx; p.y += p.vy;
-    p.vx *= 0.974; p.vy *= 0.974;
-    p.life -= 1 / (p.maxLife * 60);
-  });
-  particles = particles.filter(p => p.life > 0);
-}
-
-// ─────────────────────────────────────────
-// DRAW
-// ─────────────────────────────────────────
-function draw() {
-  // Background
-  ctx.fillStyle = '#050510';
-  ctx.fillRect(0, 0, W, H);
-
-  // Nebula blobs (static decorative)
-  const nk = [[W*0.2, H*0.3, 180, '#1a0a3a'], [W*0.75, H*0.65, 140, '#0a1a2a'], [W*0.5, H*0.8, 120, '#0f0f2a']];
-  nk.forEach(([nx, ny, nr, nc]) => {
-    const g = ctx.createRadialGradient(nx, ny, 0, nx, ny, nr);
-    g.addColorStop(0, nc + 'cc'); g.addColorStop(1, 'transparent');
-    ctx.beginPath(); ctx.arc(nx, ny, nr, 0, Math.PI*2); ctx.fillStyle = g; ctx.fill();
-  });
-
-  // Stars
-  stars.forEach(s => {
-    const tw = Math.sin(ticks * s.spd + s.off) * 0.5 + 0.5;
-    ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-    ctx.fillStyle = `rgba(255,255,255,${(0.15 + tw * 0.85) * s.bri})`;
-    ctx.fill();
-  });
-
-  // Particles
-  particles.forEach(p => {
-    ctx.save(); ctx.globalAlpha = Math.max(0, p.life);
-    if (p.shard) {
-      ctx.fillStyle = p.color;
-      ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size * p.life + 1, p.size * p.life + 1);
-    } else {
-      ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(0.1, p.size * p.life), 0, Math.PI*2);
-      ctx.fillStyle = p.color; ctx.fill();
-    }
-    ctx.restore();
-  });
-
-  // Meteors
-  meteors.forEach(m => {
-    if (m.hit) return;
-    const pulse = Math.sin(ticks * 0.03 + m.pulseOff) * 0.12 + 0.88;
-
-    ctx.save(); ctx.translate(m.x, m.y); ctx.rotate(m.rot);
-
-    // Glow halo
-    const glR = m.size * 1.9 * pulse;
-    const grd = ctx.createRadialGradient(0, 0, m.size * 0.2, 0, 0, glR);
-    grd.addColorStop(0, m.color + '28'); grd.addColorStop(1, 'transparent');
-    ctx.beginPath(); ctx.arc(0, 0, glR, 0, Math.PI*2); ctx.fillStyle = grd; ctx.fill();
-
-    // Rock shape (deterministic bumps from id)
-    ctx.beginPath();
-    const pts = 10;
-    for (let i = 0; i <= pts; i++) {
-      const a = (i / pts) * Math.PI * 2;
-      const code = m.id.charCodeAt(i % m.id.length);
-      const noise = 0.72 + ((code * 17 + i * 11) % 32) / 100;
-      const r = m.size * noise;
-      i === 0 ? ctx.moveTo(Math.cos(a)*r, Math.sin(a)*r) : ctx.lineTo(Math.cos(a)*r, Math.sin(a)*r);
-    }
-    ctx.closePath();
-    const rg = ctx.createRadialGradient(-m.size*0.25, -m.size*0.25, 0, 0, 0, m.size);
-    rg.addColorStop(0, '#3a3a55'); rg.addColorStop(0.6, '#1e1e33'); rg.addColorStop(1, '#0f0f1e');
-    ctx.fillStyle = rg; ctx.fill();
-    ctx.strokeStyle = m.color; ctx.lineWidth = 1.8;
-    ctx.globalAlpha = 0.55 * pulse; ctx.stroke(); ctx.globalAlpha = 1;
-
-    // Crater details
-    ctx.globalAlpha = 0.18;
-    [[m.size*0.25, -m.size*0.2, m.size*0.12], [-m.size*0.3, m.size*0.15, m.size*0.09]].forEach(([cx,cy,cr]) => {
-      ctx.beginPath(); ctx.arc(cx, cy, cr, 0, Math.PI*2);
-      ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1; ctx.stroke();
+  // Active nav on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+  new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => {
+          a.style.color = a.getAttribute('href') === '#' + entry.target.id ? 'var(--text)' : '';
+        });
+      }
     });
-    ctx.globalAlpha = 1;
-
-    ctx.restore();
-
-    // Label
-    ctx.save();
-    ctx.font = 'bold 10px "Roboto Serif", serif';
-    ctx.textAlign = 'center';
-    ctx.fillStyle = m.color;
-    ctx.globalAlpha = 0.8;
-    ctx.fillText(m.label, m.x, m.y - m.size - 11);
-    ctx.restore();
-  });
-
-  // Bullets
-  bullets.forEach(b => {
-    ctx.save(); ctx.globalAlpha = b.life;
-    const tLen = 14;
-    const g = ctx.createLinearGradient(b.x, b.y, b.x - Math.cos(b.ang)*tLen, b.y - Math.sin(b.ang)*tLen);
-    g.addColorStop(0, '#ffffff'); g.addColorStop(0.4, '#a5f3fc'); g.addColorStop(1, 'transparent');
-    ctx.strokeStyle = g; ctx.lineWidth = 2.8;
-    ctx.beginPath();
-    ctx.moveTo(b.x, b.y);
-    ctx.lineTo(b.x - Math.cos(b.ang)*tLen, b.y - Math.sin(b.ang)*tLen);
-    ctx.stroke();
-    ctx.beginPath(); ctx.arc(b.x, b.y, 3, 0, Math.PI*2);
-    ctx.fillStyle = '#fff'; ctx.fill();
-    ctx.restore();
-  });
-
-  // Ship
-  drawShip();
-}
-
-function drawShip() {
-  const { x, y, angle } = ship;
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.rotate(angle + Math.PI/2);
-
-  // Body
-  ctx.beginPath();
-  ctx.moveTo(0, -19);
-  ctx.lineTo(-12, 13);
-  ctx.lineTo(-5,  8);
-  ctx.lineTo(0,  10);
-  ctx.lineTo(5,   8);
-  ctx.lineTo(12,  13);
-  ctx.closePath();
-  const bg = ctx.createLinearGradient(0, -19, 0, 13);
-  bg.addColorStop(0, '#e2e8f0'); bg.addColorStop(1, '#64748b');
-  ctx.fillStyle = bg; ctx.fill();
-  ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1; ctx.stroke();
-
-  // Cockpit
-  ctx.beginPath(); ctx.ellipse(0, -6, 4, 6, 0, 0, Math.PI*2);
-  ctx.fillStyle = '#a5f3fc'; ctx.globalAlpha = 0.75; ctx.fill(); ctx.globalAlpha = 1;
-
-  // Wing fills
-  [[-12, 13, -7, 5, -5, 8], [12, 13, 7, 5, 5, 8]].forEach(([x1,y1,x2,y2,x3,y3]) => {
-    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.lineTo(x3,y3);
-    ctx.fillStyle = '#3b4d61'; ctx.fill();
-  });
-
-  // Engine glow
-  const eg = ctx.createRadialGradient(0, 0, 0, 0, 0, 28);
-  eg.addColorStop(0, 'rgba(165,243,252,0.07)'); eg.addColorStop(1, 'transparent');
-  ctx.beginPath(); ctx.arc(0, 0, 28, 0, Math.PI*2); ctx.fillStyle = eg; ctx.fill();
-
-  ctx.restore();
-}
-
-// ─────────────────────────────────────────
-// MOBILE JOYSTICK
-// ─────────────────────────────────────────
-(function() {
-  const base  = document.getElementById('joy-base');
-  const thumb = document.getElementById('joy-thumb');
-  const R = 37; // max thumb travel radius
-  let touchId = null;
-  let originX = 0, originY = 0;
-
-  function getCenter() {
-    const r = base.getBoundingClientRect();
-    return { x: r.left + r.width/2, y: r.top + r.height/2 };
-  }
-
-  base.addEventListener('touchstart', e => {
-    e.preventDefault();
-    if (touchId !== null) return;
-    const t = e.changedTouches[0];
-    touchId = t.identifier;
-    const c = getCenter();
-    originX = c.x; originY = c.y;
-    updateThumb(t.clientX, t.clientY);
-  }, { passive: false });
-
-  document.addEventListener('touchmove', e => {
-    for (const t of e.changedTouches) {
-      if (t.identifier === touchId) {
-        e.preventDefault();
-        updateThumb(t.clientX, t.clientY);
-      }
-    }
-  }, { passive: false });
-
-  document.addEventListener('touchend', e => {
-    for (const t of e.changedTouches) {
-      if (t.identifier === touchId) {
-        touchId = null;
-        joy.dx = 0; joy.dy = 0;
-        thumb.style.transform = 'translate(-50%, -50%)';
-      }
-    }
-  });
-
-  function updateThumb(cx, cy) {
-    let dx = cx - originX;
-    let dy = cy - originY;
-    const dist = Math.hypot(dx, dy);
-    if (dist > R) { dx = dx/dist*R; dy = dy/dist*R; }
-    joy.dx = dx / R;
-    joy.dy = dy / R;
-    thumb.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
-  }
-
-  // Fire button
-  document.getElementById('fire-btn').addEventListener('touchstart', e => {
-    e.preventDefault();
-    if (gameRunning && !panelOpen) fire();
-  }, { passive: false });
-})();
-
-// ─────────────────────────────────────────
-// LOOP
-// ─────────────────────────────────────────
-function loop() { update(); draw(); requestAnimationFrame(loop); }
-
-// ─────────────────────────────────────────
-// EVENTS
-// ─────────────────────────────────────────
-document.getElementById('startBtn').addEventListener('click', () => {
-  document.getElementById('intro').style.display = 'none';
-  initGame();
-  gameRunning = true;
-});
-
-document.getElementById('replayBtn').addEventListener('click', () => {
-  document.getElementById('all-found').style.display = 'none';
-  initGame();
-});
-
-loop();
+  }, { threshold: 0.4 }).observe && sections.forEach(s =>
+    new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) navLinks.forEach(a => {
+          a.style.color = a.getAttribute('href') === '#' + entry.target.id ? 'var(--text)' : '';
+        });
+      });
+    }, { threshold: 0.4 }).observe(s)
+  );
 </script>
 </body>
 </html>
