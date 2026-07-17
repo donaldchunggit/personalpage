@@ -1,0 +1,138 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+function usesReducedMotion() {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+/* Live Sydney clock. Makes "open now" literal, not a slogan.
+   Rendered empty on the server: the server's clock is not Sydney's,
+   and any placeholder that differs from the first client tick is a
+   hydration mismatch. */
+export function Clock() {
+  const [time, setTime] = useState("");
+
+  useEffect(() => {
+    const fmt = new Intl.DateTimeFormat("en-AU", {
+      timeZone: "Australia/Sydney",
+      hour12: false,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+    const tick = () => setTime(`SYDNEY ${fmt.format(new Date())}`);
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <span className="bar-clock" aria-hidden="true">
+      {time}
+    </span>
+  );
+}
+
+const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+/* Split-flap: the status column settles like a departure board.
+   The real text stays in the DOM for screen readers; only the
+   visible layer scrambles. */
+export function SplitFlap({
+  text,
+  delay,
+  className,
+}: {
+  text: string;
+  delay: number;
+  className?: string;
+}) {
+  const [shown, setShown] = useState(text);
+  const started = useRef(false);
+
+  useEffect(() => {
+    if (started.current) return;
+    started.current = true;
+
+    if (usesReducedMotion()) return;
+
+    const slots = text.split("");
+    const settleAt = slots.map((c, i) => (c === " " ? 0 : 6 + i * 3));
+    const total = Math.max(...settleAt);
+    let frame = 0;
+
+    setShown("");
+
+    const startId = setTimeout(() => {
+      const id = setInterval(() => {
+        frame++;
+        setShown(
+          slots
+            .map((c, i) =>
+              frame >= settleAt[i]
+                ? c
+                : GLYPHS[Math.floor(Math.random() * GLYPHS.length)],
+            )
+            .join(""),
+        );
+        if (frame > total) {
+          clearInterval(id);
+          setShown(text);
+        }
+      }, 34);
+    }, delay);
+
+    return () => clearTimeout(startId);
+  }, [text, delay]);
+
+  return (
+    <span className={className}>
+      <span aria-hidden="true">{shown}</span>
+      <span className="sr-only">{text}</span>
+    </span>
+  );
+}
+
+/* Scroll reveal. Children fade up once, then stop being observed. */
+export function Reveal({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    if (usesReducedMotion()) {
+      el.classList.add("in");
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+    );
+
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className={`rise ${className}`}>
+      {children}
+    </div>
+  );
+}
