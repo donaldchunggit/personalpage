@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Newsreader, Inter_Tight, Martian_Mono } from "next/font/google";
+import { BASE_PATH, SITE } from "../base-path";
 import "./globals.css";
 
 const newsreader = Newsreader({
@@ -20,8 +21,6 @@ const martianMono = Martian_Mono({
   variable: "--font-martian",
   display: "swap",
 });
-
-const SITE = "https://donaldchunggit.github.io/personalpage";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
@@ -53,7 +52,8 @@ export const metadata: Metadata = {
       "Full-stack & product engineering. Eight builds, seven deployed and running. Open to work in Sydney.",
     images: ["/og.png"],
   },
-  icons: { icon: "/favicon.svg" },
+  /* Metadata icons emit the href verbatim — basePath is not applied here. */
+  icons: { icon: `${BASE_PATH}/favicon.svg` },
 };
 
 const personSchema = {
