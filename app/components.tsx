@@ -49,47 +49,56 @@ export function SplitFlap({
   delay: number;
   className?: string;
 }) {
-  const [shown, setShown] = useState(text);
-  const started = useRef(false);
+  const flap = useRef<HTMLSpanElement>(null);
 
+  /* The scramble is written straight to the DOM rather than held in state.
+     It's a ~30fps animation on a decorative layer, so routing it through
+     React would re-render every row of the board on every frame to paint
+     text no screen reader ever sees. React renders the settled text once;
+     this effect owns the element in between. */
   useEffect(() => {
-    if (started.current) return;
-    started.current = true;
-
-    if (usesReducedMotion()) return;
+    const el = flap.current;
+    if (!el || usesReducedMotion()) return;
 
     const slots = text.split("");
     const settleAt = slots.map((c, i) => (c === " " ? 0 : 6 + i * 3));
     const total = Math.max(...settleAt);
     let frame = 0;
+    let flapId: ReturnType<typeof setInterval> | undefined;
 
-    setShown("");
+    el.textContent = "";
 
     const startId = setTimeout(() => {
-      const id = setInterval(() => {
+      flapId = setInterval(() => {
         frame++;
-        setShown(
-          slots
-            .map((c, i) =>
-              frame >= settleAt[i]
-                ? c
-                : GLYPHS[Math.floor(Math.random() * GLYPHS.length)],
-            )
-            .join(""),
-        );
+        el.textContent = slots
+          .map((c, i) =>
+            frame >= settleAt[i]
+              ? c
+              : GLYPHS[Math.floor(Math.random() * GLYPHS.length)],
+          )
+          .join("");
         if (frame > total) {
-          clearInterval(id);
-          setShown(text);
+          clearInterval(flapId);
+          el.textContent = text;
         }
       }, 34);
     }, delay);
 
-    return () => clearTimeout(startId);
+    return () => {
+      clearTimeout(startId);
+      clearInterval(flapId);
+      /* Restore what React thinks it rendered: it diffs against `text` and
+         won't repaint a node this effect scribbled on. */
+      el.textContent = text;
+    };
   }, [text, delay]);
 
   return (
     <span className={className}>
-      <span aria-hidden="true">{shown}</span>
+      <span aria-hidden="true" ref={flap}>
+        {text}
+      </span>
       <span className="sr-only">{text}</span>
     </span>
   );
