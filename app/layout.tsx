@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Newsreader, Inter_Tight, Martian_Mono } from "next/font/google";
-import { BASE_PATH, SITE } from "../base-path";
 import "./globals.css";
 
 const newsreader = Newsreader({
@@ -21,6 +20,10 @@ const martianMono = Martian_Mono({
   variable: "--font-martian",
   display: "swap",
 });
+
+/* Apex redirects to www, so www is canonical — pointing this at the apex would
+   make every og:image and canonical URL a redirect hop. */
+const SITE = "https://www.donaldchung.dev";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
@@ -52,8 +55,7 @@ export const metadata: Metadata = {
       "Full-stack & product engineering. Eight builds, seven deployed and running. Open to work in Sydney.",
     images: ["/og.png"],
   },
-  /* Metadata icons emit the href verbatim — basePath is not applied here. */
-  icons: { icon: `${BASE_PATH}/favicon.svg` },
+  icons: { icon: "/favicon.svg" },
 };
 
 const personSchema = {

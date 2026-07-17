@@ -1,11 +1,8 @@
 import Image from "next/image";
-import { BASE_PATH } from "../base-path";
 import { Clock, Reveal, SplitFlap } from "./components";
 import { builds, education, ledger, roles, stack, type Build } from "./data";
 
-/* Plain <a href> is not rewritten by basePath the way next/link is, so the
-   prefix has to be written in. */
-const RESUME = `${BASE_PATH}/Donald_Chung_Resume_v5.pdf`;
+const RESUME = "/Donald_Chung_Resume_v5.pdf";
 
 /* The tally is derived, not typed. Hand-written counts go stale the moment
    a build is added to data.ts. This one cannot. */
@@ -152,7 +149,7 @@ export default function Home() {
             <div className="about">
               <Reveal>
                 <Image
-                  src={`${BASE_PATH}/photos/headshot.webp`}
+                  src="/photos/headshot.webp"
                   alt="Donald Chung"
                   className="about-shot"
                   width={800}

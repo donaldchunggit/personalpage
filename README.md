@@ -1,35 +1,33 @@
 # personalpage
 
-Personal site — live at <https://donaldchunggit.github.io/personalpage>.
+Personal site — live at <https://www.donaldchung.dev>.
 
-Next.js app in `web/`. The site used to be a hand-written `index.html` at the
-repo root; that's gone, and `web/` is the whole site now.
+Next.js app, deployed on Vercel. The site used to be a hand-written
+`index.html` served straight from this repo root; that's gone.
 
 ## Local
 
 ```bash
-cd web
 npm install
-npm run dev      # http://localhost:3000/personalpage
+npm run dev      # http://localhost:3000
 ```
 
-Content lives in `web/app/data.ts` — builds, roles, education. The "eight builds,
+Content lives in `app/data.ts` — builds, roles, education. The "eight builds,
 seven deployed" tally on the page is counted from that array, so adding a build
 updates the prose automatically.
 
 ## Deploy
 
-Push to `main`. `.github/workflows/deploy.yml` runs `next build` and publishes to
-GitHub Pages. Nothing to build or commit by hand.
+Push to `main`. Vercel builds and deploys automatically.
 
-Two things about Pages shape the config, and both are easy to trip over:
+The app deliberately sits at the repo root rather than in a subdirectory.
+Vercel's Next.js builder looks for `package.json` in the project's Root
+Directory setting, which is unset here — so a nested app silently deploys as
+static files with no build, and every route 404s. `vercel.json` cannot override
+Root Directory. Keeping the app at the root means Vercel finds it with no
+dashboard configuration, and `vercel.json` pins the framework so detection
+never depends on a stored project setting.
 
-- **It serves static files only.** `next.config.ts` sets `output: "export"`, so
-  the build emits plain HTML/CSS/JS. Anything needing a server at request time
-  (route handlers reading the request, ISR, server actions) will not work.
-- **The site lives at a sub-path**, not a domain root. `basePath` covers routes
-  and `next/link`, but **not** `next/image` src, plain `<a href>`, or metadata
-  icons — those import `BASE_PATH` from `web/base-path.ts` explicitly. If an
-  asset works locally but 404s in production, this is usually why.
-
-Repo settings → Pages → Source must stay on **GitHub Actions**.
+`www` is canonical; the apex 307s to it. `SITE` in `app/layout.tsx` feeds
+`metadataBase`, so canonical URLs and og:image resolve from it — point it at the
+apex and every one becomes a redirect hop.
