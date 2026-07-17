@@ -4,622 +4,742 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Donald Chung</title>
+  <title>Donald Chung — what's still open</title>
+  <meta name="description" content="Donald Chung — computer engineering at UNSW. Five builds, four deployed. Growth at Habeas. Open to full-stack and product engineering roles in Sydney." />
+  <meta name="theme-color" content="#0B111C" />
+  <meta name="author" content="Donald Chung" />
+
+  <!-- Absolute URLs required: LinkedIn/Twitter/Slack will not resolve relative
+       og:image paths. Update the domain here if the site moves. -->
+  <link rel="canonical" href="https://donaldchunggit.github.io/personalpage/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Donald Chung" />
+  <meta property="og:url" content="https://donaldchunggit.github.io/personalpage/" />
+  <meta property="og:title" content="Donald Chung — what's still open" />
+  <meta property="og:description" content="Full-stack &amp; product engineering. Five builds, four deployed and running. Open to work in Sydney." />
+  <meta property="og:image" content="https://donaldchunggit.github.io/personalpage/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Donald Chung — what's still open. Five builds, four deployed and running." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Donald Chung — what's still open" />
+  <meta name="twitter:description" content="Full-stack &amp; product engineering. Five builds, four deployed and running. Open to work in Sydney." />
+  <meta name="twitter:image" content="https://donaldchunggit.github.io/personalpage/og.png" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Donald Chung",
+    "url": "https://donaldchunggit.github.io/personalpage/",
+    "image": "https://donaldchunggit.github.io/personalpage/og.png",
+    "jobTitle": "Growth Lead",
+    "email": "mailto:donaldchung.work@gmail.com",
+    "worksFor": { "@type": "Organization", "name": "Habeas" },
+    "affiliation": {
+      "@type": "CollegeOrUniversity",
+      "name": "UNSW Sydney"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Sydney",
+      "addressCountry": "AU"
+    },
+    "knowsAbout": [
+      "Full-stack engineering", "Product engineering", "TypeScript", "Next.js",
+      "Node.js", "Python", "Growth", "SEO", "GEO content"
+    ],
+    "sameAs": [
+      "https://github.com/donaldchunggit",
+      "https://linkedin.com/in/donald-chung-45229b350"
+    ]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,300;0,8..144,400;0,8..144,500;0,8..144,600;0,8..144,700;1,8..144,400;1,8..144,600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Martian+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:       #f9f8f6;
-      --surface:  #ffffff;
-      --text:     #0f0f0f;
-      --muted:    #888;
-      --border:   #e8e5e0;
-      --accent:   #1a1a2e;
-      --cyan:     #00c2b3;
-      --cyan-lt:  #e0faf8;
+      --ink:      #0B111C;
+      --raise:    #131B29;
+      --rule:     #223047;
+      /* Borders that carry an affordance (buttons) rather than just dividing
+         content — needs 3:1 against --ink to satisfy WCAG 1.4.11. */
+      --rule-lit: #4E6486;
+      --sodium:   #FFAD34;
+      --slate:    #8494AC;
+      --bone:     #E9EDF4;
+
+      --display: 'Big Shoulders Display', 'Arial Narrow', sans-serif;
+      --body:    'Instrument Sans', system-ui, sans-serif;
+      --mono:    'Martian Mono', ui-monospace, monospace;
+
+      --gut: 40px;
+      --max: 1180px;
     }
 
     html { scroll-behavior: smooth; }
 
+    /* The bar is fixed at 54px — without this, jumping to #about/#work/#hire
+       parks the section heading underneath it. */
+    :target, #top, #about, #work, #hire { scroll-margin-top: 78px; }
+    main:focus { outline: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Roboto Serif', serif;
+      background: var(--ink);
+      color: var(--bone);
+      font-family: var(--body);
       font-size: 16px;
-      line-height: 1.6;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
 
-    /* ── NAV ── */
-    nav {
+    a { color: inherit; }
+    :focus-visible {
+      outline: 2px solid var(--sodium);
+      outline-offset: 3px;
+    }
+
+    .shell { max-width: var(--max); margin: 0 auto; padding: 0 var(--gut); }
+
+    .skip {
+      position: absolute; left: 12px; top: -100px; z-index: 200;
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none;
+      background: var(--sodium); color: var(--ink);
+      display: inline-flex; align-items: center; min-height: 44px;
+      padding: 12px 18px;
+      transition: top 0.18s ease;
+    }
+    .skip:focus { top: 12px; }
+
+    /* ── BAR ───────────────────────────────────────── */
+    .bar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 52px;
-      background: rgba(249,248,246,0.88);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
+      background: rgba(11,17,28,0.82);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--rule);
     }
-    .nav-logo {
-      font-size: 17px; font-weight: 600; font-style: italic;
-      color: var(--text); text-decoration: none; letter-spacing: -0.01em;
+    .bar-in {
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--gut);
+      height: 54px; display: flex; align-items: center; justify-content: space-between;
     }
-    .nav-links { display: flex; gap: 36px; list-style: none; }
-    .nav-links a {
-      font-size: 13px; font-weight: 400; color: var(--muted);
-      text-decoration: none; letter-spacing: 0.01em; transition: color 0.2s;
+    .bar-name {
+      font-family: var(--display);
+      font-size: 21px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; text-decoration: none;
     }
-    .nav-links a:hover { color: var(--text); }
-    .nav-cta {
-      background: var(--text); color: var(--bg) !important;
-      padding: 8px 22px; border-radius: 999px; font-size: 13px !important;
-      font-weight: 500 !important; transition: opacity 0.2s;
-    }
-    .nav-cta:hover { opacity: 0.78; }
+    .bar-right { display: flex; align-items: center; gap: 22px; }
 
-    /* ── HERO ── */
-    .hero-wrap {
-      position: relative; min-height: 100vh; overflow: hidden;
+    /* Résumé is the single thing a recruiter reaches for — keep it reachable
+       without scrolling to the footer. */
+    .bar-cv {
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--slate); text-decoration: none;
+      display: inline-flex; align-items: center; min-height: 44px;
+      transition: color 0.18s;
     }
-    .hero-bg {
-      position: absolute; inset: 0;
-      background: url('photos/donald_chung.jpg') center 20% / cover no-repeat;
-      transform: scale(1.04);
-      transition: transform 0.1s linear;
-    }
-    .hero-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(110deg, rgba(8,8,8,0.78) 0%, rgba(8,8,8,0.55) 55%, rgba(8,8,8,0.2) 100%);
-    }
-    .hero-content {
-      position: relative; z-index: 2;
-      min-height: 100vh; display: flex; flex-direction: column;
-      justify-content: center;
-      padding: 140px 64px 100px;
-      max-width: 860px;
-    }
-    .hero-eyebrow {
-      font-size: 11px; font-weight: 400; letter-spacing: 0.16em;
-      text-transform: uppercase; color: rgba(255,255,255,0.5);
-      margin-bottom: 28px; display: flex; align-items: center; gap: 10px;
-    }
-    .hero-eyebrow::before { content: ''; width: 24px; height: 1px; background: rgba(255,255,255,0.4); }
-    .hero-content h1 {
-      font-size: clamp(56px, 8.5vw, 108px); font-weight: 700;
-      line-height: 1.0; letter-spacing: -0.03em; color: #fff; margin-bottom: 26px;
-    }
-    .hero-content h1 em { font-style: italic; font-weight: 400; color: var(--cyan); }
-    .hero-sub {
-      font-size: 17px; font-weight: 300; color: rgba(255,255,255,0.62);
-      max-width: 460px; line-height: 1.8; margin-bottom: 44px;
-    }
-    .hero-sub strong { font-weight: 600; color: rgba(255,255,255,0.9); }
-    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
-    .btn-solid {
-      background: white; color: #0f0f0f;
-      padding: 14px 34px; border-radius: 999px; font-size: 14px;
-      font-weight: 600; text-decoration: none; font-family: 'Roboto Serif', serif;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .btn-solid:hover { opacity: 0.88; transform: translateY(-2px); }
-    .btn-outline {
-      border: 1.5px solid rgba(255,255,255,0.35); background: rgba(255,255,255,0.08);
-      color: white; padding: 13px 30px; border-radius: 999px;
-      font-size: 14px; font-weight: 400; text-decoration: none;
-      font-family: 'Roboto Serif', serif; backdrop-filter: blur(8px);
-      transition: border-color 0.2s, background 0.2s, transform 0.2s;
-    }
-    .btn-outline:hover { border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.15); transform: translateY(-2px); }
-    .hero-scroll {
-      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
-      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 6px;
-      color: rgba(255,255,255,0.3); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-    }
-    .hero-scroll-line {
-      width: 1px; height: 36px;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
-    }
-    @keyframes scrollPulse {
-      0%,100% { opacity: 0.3; } 50% { opacity: 1; }
-    }
+    .bar-cv:hover { color: var(--bone); }
 
-    /* ── SECTION BASE ── */
-    .section { padding: 110px 52px; max-width: 1100px; margin: 0 auto; }
-    .section-label {
-      font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--cyan); display: flex;
-      align-items: center; gap: 12px; margin-bottom: 56px;
+    .bar-clock {
+      font-family: var(--mono); font-size: 11px; font-weight: 400;
+      color: var(--slate); letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
     }
-    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-    .section-title {
-      font-size: clamp(32px, 4vw, 48px); font-weight: 700; letter-spacing: -0.025em;
-      margin-bottom: 16px; line-height: 1.1;
+    .bar-status {
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--sodium); text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(255,173,52,0.35);
+      padding: 5px 12px;
+      position: relative;
+      transition: background 0.2s, border-color 0.2s;
     }
-    .section-title em { font-style: italic; font-weight: 400; }
+    .bar-status:hover { background: rgba(255,173,52,0.1); border-color: var(--sodium); }
+    /* The pill reads ~28px tall; stretch the hit area to 44px without
+       inflating the visual chip inside a 54px bar. */
+    .bar-status::after {
+      content: ''; position: absolute; left: 0; right: 0;
+      top: 50%; height: 44px; transform: translateY(-50%);
+    }
+    .lamp {
+      width: 6px; height: 6px; background: var(--sodium);
+      border-radius: 50%; flex: none;
+      box-shadow: 0 0 7px rgba(255,173,52,0.9);
+      animation: breathe 3.4s ease-in-out infinite;
+    }
+    @keyframes breathe { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
 
-    /* ── PROJECTS ── */
-    .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    /* ── HERO ──────────────────────────────────────── */
+    .hero { padding: 150px 0 30px; }
+    .eyebrow {
+      font-family: var(--mono); font-size: 10px; font-weight: 400;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate);
+      display: flex; align-items: center; gap: 12px; margin-bottom: 26px;
+    }
+    .eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--rule); flex: none; }
 
-    .proj-card {
-      background: var(--surface); padding: 40px;
-      text-decoration: none; color: inherit; position: relative; overflow: hidden;
-      transition: background 0.25s;
-      border: 1px solid var(--border);
+    .hero h1 {
+      font-family: var(--display);
+      font-size: clamp(76px, 15.5vw, 210px);
+      font-weight: 800;
+      line-height: 0.82;
+      letter-spacing: -0.015em;
+      text-transform: uppercase;
+      margin-bottom: 34px;
     }
-    .proj-card:hover { background: var(--text); color: var(--bg); }
-    .proj-card:hover .proj-desc { color: rgba(255,255,255,0.6); }
-    .proj-card:hover .proj-tag { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); }
-    .proj-card:hover .proj-cat { color: var(--cyan); }
-    .proj-card:hover .proj-arrow { opacity: 1; transform: translate(4px,-4px); }
+    .hero h1 .open { color: var(--sodium); }
 
-    .proj-num {
-      font-size: 11px; font-weight: 400; color: var(--muted);
-      letter-spacing: 0.08em; margin-bottom: 28px; display: block;
-      transition: color 0.25s;
+    .hero-lede {
+      max-width: 520px;
+      font-size: 16px; color: var(--slate); line-height: 1.75;
+      margin-bottom: 60px;
     }
-    .proj-card:hover .proj-num { color: rgba(255,255,255,0.35); }
-    .proj-cat {
-      font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--cyan); margin-bottom: 10px;
-    }
-    .proj-title {
-      font-size: 22px; font-weight: 700; letter-spacing: -0.02em;
-      margin-bottom: 12px; line-height: 1.2;
-    }
-    .proj-desc {
-      font-size: 14px; color: #666; line-height: 1.75; margin-bottom: 24px;
-      font-weight: 300; transition: color 0.25s;
-    }
-    .proj-tags { display: flex; flex-wrap: wrap; gap: 7px; }
-    .proj-tag {
-      font-size: 11px; padding: 4px 12px; border-radius: 999px;
-      background: var(--bg); color: #666; font-weight: 400;
-      transition: background 0.25s, color 0.25s;
-    }
-    .proj-arrow {
-      position: absolute; top: 40px; right: 40px;
-      font-size: 20px; opacity: 0.25; transition: opacity 0.25s, transform 0.25s;
-    }
+    .hero-lede em { font-style: italic; color: var(--bone); }
 
-    /* wide card spans both columns */
-    .proj-card.wide { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-    .proj-card.wide .proj-arrow { position: static; align-self: start; }
+    /* ── BOARD ─────────────────────────────────────── */
+    .board {
+      border: 1px solid var(--rule);
+      background: var(--raise);
+    }
+    .board-head {
+      display: grid;
+      grid-template-columns: 1.35fr 2fr 1.15fr 130px;
+      gap: 22px;
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--rule);
+      font-family: var(--mono); font-size: 9px; font-weight: 500;
+      letter-spacing: 0.13em; text-transform: uppercase; color: var(--slate);
+    }
+    .board-row {
+      display: grid;
+      grid-template-columns: 1.35fr 2fr 1.15fr 130px;
+      gap: 22px;
+      align-items: center;
+      padding: 26px 24px;
+      border-bottom: 1px solid var(--rule);
+      text-decoration: none;
+      position: relative;
+      transition: background 0.18s;
+    }
+    .board-row:last-child { border-bottom: 0; }
+    .board-row::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 2px; background: var(--sodium);
+      transform: scaleY(0); transform-origin: center;
+      transition: transform 0.18s ease;
+    }
+    .board-row:hover, .board-row:focus-visible { background: rgba(255,173,52,0.045); }
+    .board-row:hover::before, .board-row:focus-visible::before { transform: scaleY(1); }
+    .board-row:hover .r-name { color: var(--sodium); }
+    .board-row:hover .r-go { opacity: 1; transform: none; }
 
-    /* ── ABOUT ── */
-    .about-grid {
-      display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start;
+    .r-name {
+      font-family: var(--display); font-size: 26px; font-weight: 700;
+      line-height: 1.05; letter-spacing: 0.01em; text-transform: uppercase;
+      transition: color 0.18s;
     }
-    .about-img-wrap { position: sticky; top: 90px; }
-    .about-img {
-      width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: center top;
-      border-radius: 4px; display: block;
+    .r-year {
+      font-family: var(--mono); font-size: 10px; font-weight: 300;
+      color: var(--slate); margin-top: 5px; letter-spacing: -0.02em;
     }
-    .about-caption {
-      font-size: 11px; color: var(--muted); margin-top: 12px;
-      display: flex; align-items: center; gap: 5px;
+    .r-what { font-size: 14px; color: var(--slate); line-height: 1.6; }
+    .r-stack {
+      font-family: var(--mono); font-size: 10px; font-weight: 300;
+      color: var(--slate); line-height: 1.9; letter-spacing: -0.03em;
     }
-    .about-text h2 { font-size: 36px; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 20px; line-height: 1.15; }
-    .about-text h2 em { font-style: italic; font-weight: 400; color: var(--cyan); }
-    .about-text p { font-size: 15px; font-weight: 300; color: #555; line-height: 1.85; margin-bottom: 16px; }
-    .about-text p:last-of-type { margin-bottom: 28px; }
-
-    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
-    .chip {
-      font-size: 12px; padding: 6px 14px; border-radius: 999px;
-      border: 1px solid var(--border); color: #555; font-weight: 400;
-      background: var(--surface);
+    .r-end { display: flex; align-items: center; justify-content: flex-end; gap: 14px; }
+    .r-status {
+      font-family: var(--mono); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.06em; white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .r-status.live { color: var(--sodium); }
+    .r-status.dim  { color: var(--slate); }
+    .r-go {
+      font-size: 15px; color: var(--sodium);
+      opacity: 0; transform: translate(-3px, 3px);
+      transition: opacity 0.18s, transform 0.18s;
     }
 
-    .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 8px; }
-    .stat-box {
-      background: var(--surface); border: 1px solid var(--border);
-      padding: 22px 24px;
+    .board-foot {
+      font-family: var(--mono); font-size: 11px; font-weight: 300;
+      color: var(--slate); letter-spacing: -0.02em;
+      margin-top: 18px;
     }
-    .stat-n { font-size: 30px; font-weight: 700; letter-spacing: -0.03em; display: block; }
-    .stat-l { font-size: 11px; font-weight: 300; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+    .board-foot b { color: var(--bone); font-weight: 500; }
 
-    /* ── EXPERIENCE ── */
-    .exp-table { border-top: 1px solid var(--border); }
-    .exp-row {
-      display: grid; grid-template-columns: 1fr auto;
-      align-items: start; gap: 24px;
-      padding: 28px 0; border-bottom: 1px solid var(--border);
-    }
-    .exp-role { font-size: 17px; font-weight: 600; margin-bottom: 3px; letter-spacing: -0.01em; }
-    .exp-company { font-size: 13px; color: var(--muted); font-weight: 300; }
-    .exp-date {
-      font-size: 11px; color: var(--muted); font-weight: 400;
-      background: var(--bg); border: 1px solid var(--border);
-      padding: 4px 14px; border-radius: 999px; white-space: nowrap;
+    /* ── SECTIONS ──────────────────────────────────── */
+    .band { padding: 120px 0; border-top: 1px solid var(--rule); margin-top: 120px; }
+    .band-tight { padding: 120px 0 0; border-top: 1px solid var(--rule); margin-top: 120px; }
+
+    .kicker {
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.13em; text-transform: uppercase; color: var(--sodium);
+      margin-bottom: 44px;
     }
 
-    /* ── SKILLS ── */
-    .skills-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; }
-    .skill-group {
-      background: var(--surface); border: 1px solid var(--border); padding: 28px;
+    /* ── ABOUT ─────────────────────────────────────── */
+    .about { display: grid; grid-template-columns: 300px 1fr; gap: 72px; align-items: start; }
+    /* height:auto is load-bearing — the width/height attrs on the <img> are
+       presentational hints that would otherwise force height to the intrinsic
+       1764px and defeat aspect-ratio. */
+    /* The headshot is background-knocked-out with alpha, so it sits directly on
+       the page ink. height:auto is load-bearing — the width/height attrs are
+       presentational hints that would otherwise defeat aspect-ratio. */
+    .about-shot {
+      display: block; width: 100%; height: auto;
+      aspect-ratio: 4/5; object-fit: cover; object-position: center bottom;
+      filter: grayscale(1) contrast(1.06);
     }
-    .skill-group-title {
-      font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
+    .about-cap { font-family: var(--mono); font-size: 10px; font-weight: 300; color: var(--slate); margin-top: 12px; letter-spacing: -0.02em; }
+
+    .about h2 {
+      font-family: var(--display); font-size: clamp(38px, 5vw, 62px);
+      font-weight: 700; line-height: 0.95; letter-spacing: 0.005em;
+      text-transform: uppercase; margin-bottom: 26px;
     }
-    .skill-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-    .skill-chip {
-      font-size: 12px; font-weight: 400; padding: 5px 13px;
-      border-radius: 999px; background: var(--bg);
-      border: 1px solid var(--border); color: var(--text);
+    .about h2 span { color: var(--sodium); }
+    .about p { font-size: 15.5px; color: var(--slate); line-height: 1.8; margin-bottom: 18px; max-width: 620px; }
+    .about p strong { color: var(--bone); font-weight: 500; }
+
+    /* ── LEDGER ────────────────────────────────────── */
+    .ledger { margin-top: 46px; border-top: 1px solid var(--rule); }
+    .led-row {
+      display: grid; grid-template-columns: 150px 1fr; gap: 28px;
+      align-items: baseline; padding: 22px 0; border-bottom: 1px solid var(--rule);
+    }
+    .led-n {
+      font-family: var(--display); font-size: 42px; font-weight: 700;
+      color: var(--sodium); line-height: 1; letter-spacing: 0.01em;
+    }
+    .led-l { font-size: 14px; color: var(--slate); line-height: 1.65; }
+
+    /* ── TABLE ─────────────────────────────────────── */
+    .tbl { border-top: 1px solid var(--rule); }
+    .tbl-row {
+      display: grid; grid-template-columns: 1fr auto; gap: 28px;
+      align-items: baseline; padding: 24px 0; border-bottom: 1px solid var(--rule);
+    }
+    .t-role { font-size: 17px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 4px; }
+    .t-org { font-size: 13.5px; color: var(--slate); line-height: 1.6; }
+    .t-when {
+      font-family: var(--mono); font-size: 10px; font-weight: 300;
+      color: var(--slate); white-space: nowrap; letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
     }
 
-    /* ── CONTACT ── */
-    .contact-block {
-      background: var(--text); color: var(--bg); border-radius: 4px;
-      padding: 72px 64px; display: grid; grid-template-columns: 1fr auto;
-      gap: 48px; align-items: center;
+    /* ── STACK ─────────────────────────────────────── */
+    .stack { border-top: 1px solid var(--rule); }
+    .st-row {
+      display: grid; grid-template-columns: 150px 1fr; gap: 28px;
+      align-items: baseline; padding: 20px 0; border-bottom: 1px solid var(--rule);
     }
-    .contact-block h2 {
-      font-size: clamp(30px, 4vw, 46px); font-weight: 700; font-style: italic;
-      letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 14px;
+    .st-k {
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.11em; text-transform: uppercase; color: var(--slate);
     }
-    .contact-block p { font-size: 15px; font-weight: 300; opacity: 0.55; max-width: 420px; line-height: 1.75; }
-    .contact-links { display: flex; flex-direction: column; gap: 10px; min-width: 180px; }
-    .c-btn {
-      padding: 13px 26px; border-radius: 999px; font-size: 13px; font-weight: 500;
-      text-decoration: none; text-align: center; white-space: nowrap;
-      font-family: 'Roboto Serif', serif; transition: opacity 0.2s, transform 0.2s;
-      display: block;
-    }
-    .c-btn:hover { opacity: 0.82; transform: translateY(-1px); }
-    .c-btn.light { background: var(--bg); color: var(--text); }
-    .c-btn.ghost { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.18); }
+    .st-v { font-size: 14.5px; color: var(--bone); line-height: 1.75; }
 
-    /* ── FOOTER ── */
+    /* ── CLOSE ─────────────────────────────────────── */
+    .close { padding: 120px 0; border-top: 1px solid var(--rule); margin-top: 120px; }
+    .close h2 {
+      font-family: var(--display); font-size: clamp(54px, 9vw, 118px);
+      font-weight: 800; line-height: 0.85; letter-spacing: -0.01em;
+      text-transform: uppercase; margin-bottom: 28px;
+    }
+    .close h2 span { color: var(--sodium); }
+    .close p { max-width: 480px; font-size: 15.5px; color: var(--slate); line-height: 1.8; margin-bottom: 40px; }
+    .close-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .lnk {
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none;
+      display: inline-flex; align-items: center; min-height: 44px;
+      padding: 13px 22px; border: 1px solid var(--rule-lit);
+      transition: border-color 0.18s, color 0.18s, background 0.18s;
+    }
+    .lnk:hover { border-color: var(--sodium); color: var(--sodium); }
+    .lnk.fill { background: var(--sodium); border-color: var(--sodium); color: var(--ink); }
+    .lnk.fill:hover { background: #FFC062; border-color: #FFC062; color: var(--ink); }
+
     footer {
-      text-align: center; padding: 36px; font-size: 12px;
-      color: var(--muted); border-top: 1px solid var(--border);
-      font-weight: 300;
+      border-top: 1px solid var(--rule);
+      padding: 26px 0;
+    }
+    .foot-in {
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--gut);
+      display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+      font-family: var(--mono); font-size: 10px; font-weight: 300;
+      color: var(--slate); letter-spacing: -0.02em;
     }
 
-    /* ── DIVIDER ── */
-    .full-border { border-top: 1px solid var(--border); }
+    /* ── REVEAL ────────────────────────────────────── */
+    /* Gated on .js so the About/Experience content is never stranded at
+       opacity 0 if the script fails to run. */
+    .js .rise { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .js .rise.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) { .js .rise { opacity: 1; transform: none; } }
 
-    /* ── FADE IN ── */
-    .fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.55s ease, transform 0.55s ease; }
-    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    /* ── RESPONSIVE ────────────────────────────────── */
+    @media (max-width: 900px) {
+      :root { --gut: 22px; }
+      .bar-clock { display: none; }
+      .hero { padding: 120px 0 20px; }
+      .board-head { display: none; }
+      .board-row {
+        grid-template-columns: 1fr auto;
+        gap: 14px 18px;
+        padding: 22px;
+      }
+      .r-head { grid-column: 1; }
+      .r-end { grid-column: 2; align-self: start; }
+      .r-what, .r-stack { grid-column: 1 / -1; }
+      .r-go { opacity: 1; transform: none; }
+      .about { grid-template-columns: 1fr; gap: 40px; }
+      .about-shot { max-width: 240px; }
+      .led-row, .st-row { grid-template-columns: 1fr; gap: 8px; }
+      .band, .band-tight, .close { padding-top: 84px; margin-top: 84px; }
+      .band { padding-bottom: 84px; }
+      .close { padding-bottom: 84px; }
+    }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 820px) {
-      nav { padding: 16px 24px; }
-      .nav-links { display: none; }
-      .hero-content { padding: 110px 24px 80px; }
-      .section { padding: 72px 24px; }
-      .projects-grid { grid-template-columns: 1fr; }
-      .proj-card.wide { grid-column: span 1; grid-template-columns: 1fr; }
-      .about-grid { grid-template-columns: 1fr; }
-      .about-img-wrap { position: static; }
-      .about-img { max-height: 340px; }
-      .skills-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
-      .contact-block { grid-template-columns: 1fr; padding: 44px 28px; }
-      .contact-links { flex-direction: row; flex-wrap: wrap; }
+    /* ── PRINT ─────────────────────────────────────── */
+    /* Recruiters do print these. Invert to paper, drop the chrome, and
+       surface link targets that are otherwise invisible on paper. */
+    @media print {
+      .bar, .skip, .r-go, .about-shot, .about-cap, .lamp { display: none !important; }
+      body { background: #fff; color: #000; font-size: 11pt; }
+      .hero { padding: 0; }
+      .hero h1 { font-size: 48pt; color: #000; }
+      .hero h1 .open, .about h2 span, .close h2 span, .led-n, .kicker { color: #000; }
+      .hero-lede, .r-what, .r-stack, .about p, .led-l, .t-org, .t-when, .board-foot, .st-k {
+        color: #333;
+      }
+      .board, .board-row, .about-shot { background: #fff; }
+      .board, .board-row, .tbl-row, .led-row, .st-row, .ledger, .tbl, .stack, .board-head {
+        border-color: #bbb;
+      }
+      .r-name, .about h2, .close h2, .t-role, .st-v { color: #000; }
+      .about { grid-template-columns: 1fr; }
+      .band, .band-tight, .close { padding: 18pt 0; margin-top: 0; border-color: #bbb; }
+      /* Anchors are meaningless on paper unless the URL is printed. */
+      .board-row[href]::after, .lnk[href]::after {
+        content: ' (' attr(href) ')';
+        font-family: var(--mono); font-size: 8pt; color: #555;
+      }
+      .lnk { border-color: #888; color: #000; }
+      .lnk.fill { background: none; color: #000; }
+      .board-row, .tbl-row, .led-row, .st-row { break-inside: avoid; }
+      .band, .band-tight { break-before: auto; }
+      footer { border-color: #bbb; }
+      .foot-in { color: #555; }
     }
   </style>
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">donald chung</a>
-  <ul class="nav-links">
-    <li><a href="#projects">projects</a></li>
-    <li><a href="#about">about</a></li>
-    <li><a href="#experience">experience</a></li>
-    <li><a href="#contact" class="nav-cta">get in touch →</a></li>
-  </ul>
-</nav>
+<a class="skip" href="#top">Skip to content</a>
 
-<!-- HERO -->
-<div class="hero-wrap">
-  <div class="hero-bg" id="heroBg"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow">Full-Stack Engineer &amp; Product Builder · Sydney</div>
-    <h1>Donald<br/><em>Chung.</em></h1>
-    <p class="hero-sub">
-      Computer Engineering student at UNSW who designs <strong>and</strong> builds.
-      Shipped products, real users, zero fluff.
-    </p>
-    <div class="hero-btns">
-      <a href="#projects" class="btn-solid">see my work ↓</a>
-      <a href="Donald-Chung.pdf" download class="btn-outline">download résumé</a>
+<header class="bar">
+  <div class="bar-in">
+    <a href="#top" class="bar-name">Donald Chung</a>
+    <div class="bar-right">
+      <span class="bar-clock" id="clock" aria-hidden="true">SYDNEY —:—:—</span>
+      <a class="bar-cv" href="Donald_Chung_Resume_v5.pdf" download="Donald-Chung-Resume.pdf">Résumé</a>
+      <a href="#hire" class="bar-status"><span class="lamp" aria-hidden="true"></span>Open to work</a>
     </div>
   </div>
-  <div class="hero-scroll">
-    <div class="hero-scroll-line"></div>
-    scroll
-  </div>
-</div>
+</header>
 
-<!-- PROJECTS -->
-<section id="projects" class="section">
-  <div class="section-label">Things I've Built</div>
-  <div class="projects-grid">
+<main id="top" tabindex="-1">
 
-    <a href="https://github.com/donaldchunggit/WhatStillOpenSydney" target="_blank" class="proj-card fade-up">
-      <span class="proj-num">01</span>
-      <div class="proj-cat">Consumer App · Live</div>
-      <div class="proj-title">What's Still Open Sydney</div>
-      <div class="proj-arrow">↗</div>
-      <p class="proj-desc">Late-night activity finder for Sydney. Surfaces every venue open right now with real-time countdowns, geolocation search, and a "Plan My Night" AI feature that curates a full evening in one tap.</p>
-      <div class="proj-tags">
-        <span class="proj-tag">Next.js</span>
-        <span class="proj-tag">TypeScript</span>
-        <span class="proj-tag">Google Places API</span>
-        <span class="proj-tag">Vercel</span>
-      </div>
-    </a>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="shell">
+      <p class="eyebrow">Computer engineering, UNSW — Sydney</p>
+      <h1>What's<br/>still<br/><span class="open">open</span></h1>
+      <p class="hero-lede">
+        My first real product answers one question about Sydney at 1am: <em>what's still open?</em>
+        This is the same board, pointed at my own work.
+      </p>
 
-    <a href="https://github.com/donaldchunggit/stockkeephelper" target="_blank" class="proj-card fade-up">
-      <span class="proj-num">02</span>
-      <div class="proj-cat">Internal Tool · Production</div>
-      <div class="proj-title">Snap Ops: Retail Dashboard</div>
-      <div class="proj-arrow">↗</div>
-      <p class="proj-desc">Internal ops dashboard for a live retail business. Inventory management, order tracking, and low-stock alerts all powered by Supabase. Replaced spreadsheets entirely. Real users, in production.</p>
-      <div class="proj-tags">
-        <span class="proj-tag">Next.js</span>
-        <span class="proj-tag">Supabase</span>
-        <span class="proj-tag">Express</span>
-        <span class="proj-tag">Dashboard UI</span>
-      </div>
-    </a>
-
-    <a href="https://github.com/chunyin7/wingman" target="_blank" class="proj-card fade-up">
-      <span class="proj-num">03</span>
-      <div class="proj-cat">Hackathon · Unihack 2026</div>
-      <div class="proj-title">Wingman: AI Social Coach</div>
-      <div class="proj-arrow">↗</div>
-      <p class="proj-desc">"Duolingo for social anxiety." AI-powered rehearsal coach with scenario-based chat, voice interactions, XP streaks, and a gamified skill roadmap. Built at Unihack 2026.</p>
-      <div class="proj-tags">
-        <span class="proj-tag">Next.js</span>
-        <span class="proj-tag">OpenAI</span>
-        <span class="proj-tag">Supabase</span>
-        <span class="proj-tag">Tailwind CSS</span>
-      </div>
-    </a>
-
-    <a href="https://github.com/donaldchunggit/FEAdestroyer" target="_blank" class="proj-card fade-up">
-      <span class="proj-num">04</span>
-      <div class="proj-cat">ML / Engineering · Research</div>
-      <div class="proj-title">FEA Destroyer</div>
-      <div class="proj-arrow">↗</div>
-      <p class="proj-desc">Physics-informed ML surrogate for 2D truss bridge design. Trains on FEM-generated data to predict stress and deflection from geometry alone. Orders of magnitude faster than traditional FEA.</p>
-      <div class="proj-tags">
-        <span class="proj-tag">Python</span>
-        <span class="proj-tag">Machine Learning</span>
-        <span class="proj-tag">FEM</span>
-        <span class="proj-tag">NumPy</span>
-      </div>
-    </a>
-
-    <a href="https://github.com/donaldchunggit" target="_blank" class="proj-card wide fade-up">
-      <div>
-        <span class="proj-num">05</span>
-        <div class="proj-cat">Backend · API Design</div>
-        <div class="proj-title">Quiz Platform Backend</div>
-        <p class="proj-desc">Production-style REST API inspired by Kahoot. Full authentication & session management, quiz and question CRUD, TypeScript with strict typing, and integration tests throughout.</p>
-      </div>
-      <div>
-        <div class="proj-tags" style="margin-bottom:28px;">
-          <span class="proj-tag">TypeScript</span>
-          <span class="proj-tag">Node.js</span>
-          <span class="proj-tag">REST API</span>
-          <span class="proj-tag">Testing</span>
-          <span class="proj-tag">Auth</span>
+      <div class="board" id="board">
+        <div class="board-head" aria-hidden="true">
+          <span>Build</span>
+          <span>What it does</span>
+          <span>Stack</span>
+          <span style="text-align:right;">Status</span>
         </div>
-        <div class="proj-arrow" style="font-size:18px; opacity:0.3;">↗</div>
+
+        <a class="board-row" href="https://github.com/donaldchunggit/WhatStillOpenSydney" target="_blank" rel="noopener">
+          <div class="r-head">
+            <div class="r-name">What's Still Open Sydney</div>
+            <div class="r-year">2026 · consumer</div>
+          </div>
+          <p class="r-what">Finds the venues open around you right now, counts down to last call, and plans a whole night in one tap.</p>
+          <p class="r-stack">Next.js<br/>TypeScript<br/>Google Places</p>
+          <div class="r-end">
+            <span class="r-status live" data-flap="LIVE">LIVE</span>
+            <span class="r-go" aria-hidden="true">↗</span>
+          </div>
+        </a>
+
+        <a class="board-row" href="https://github.com/donaldchunggit/stockkeephelper" target="_blank" rel="noopener">
+          <div class="r-head">
+            <div class="r-name">Snap Ops</div>
+            <div class="r-year">2026 · internal tool</div>
+          </div>
+          <p class="r-what">Runs inventory, orders and low-stock alerts for a working retail business. It replaced the spreadsheets, and the staff use it daily.</p>
+          <p class="r-stack">Next.js<br/>Supabase<br/>Express</p>
+          <div class="r-end">
+            <span class="r-status live" data-flap="IN PROD">IN PROD</span>
+            <span class="r-go" aria-hidden="true">↗</span>
+          </div>
+        </a>
+
+        <a class="board-row" href="https://github.com/chunyin7/wingman" target="_blank" rel="noopener">
+          <div class="r-head">
+            <div class="r-name">Wingman</div>
+            <div class="r-year">2026 · Unihack</div>
+          </div>
+          <p class="r-what">A rehearsal room for social anxiety. Scenario chat, voice practice, and streaks that get you to come back tomorrow.</p>
+          <p class="r-stack">Next.js<br/>OpenAI<br/>Supabase</p>
+          <div class="r-end">
+            <span class="r-status live" data-flap="SHIPPED">SHIPPED</span>
+            <span class="r-go" aria-hidden="true">↗</span>
+          </div>
+        </a>
+
+        <a class="board-row" href="https://github.com/donaldchunggit/FEAdestroyer" target="_blank" rel="noopener">
+          <div class="r-head">
+            <div class="r-name">FEA Destroyer</div>
+            <div class="r-year">2025 · research</div>
+          </div>
+          <p class="r-what">Reads the geometry of a 2D truss bridge and predicts its stress and deflection without running the solver.</p>
+          <p class="r-stack">Python<br/>NumPy<br/>FEM</p>
+          <div class="r-end">
+            <span class="r-status dim" data-flap="IN LAB">IN LAB</span>
+            <span class="r-go" aria-hidden="true">↗</span>
+          </div>
+        </a>
+
+        <a class="board-row" href="https://github.com/donaldchunggit" target="_blank" rel="noopener">
+          <div class="r-head">
+            <div class="r-name">Quiz Platform API</div>
+            <div class="r-year">2025 · backend</div>
+          </div>
+          <p class="r-what">A Kahoot-shaped REST backend built to production manners: auth, sessions, full CRUD, and tests that actually run.</p>
+          <p class="r-stack">TypeScript<br/>Node.js<br/>Express</p>
+          <div class="r-end">
+            <span class="r-status live" data-flap="SHIPPED">SHIPPED</span>
+            <span class="r-go" aria-hidden="true">↗</span>
+          </div>
+        </a>
       </div>
-    </a>
 
-  </div>
-</section>
-
-<div class="full-border"></div>
-
-<!-- ABOUT -->
-<section id="about" class="section">
-  <div class="section-label">Who I Am</div>
-  <div class="about-grid">
-    <div class="about-img-wrap fade-up">
-      <img src="photos/donald_chung.jpg" alt="Donald Chung" class="about-img" />
-      <p class="about-caption">📍 Sydney, Australia</p>
+      <p class="board-foot">Five builds. <b>Four deployed and running.</b> One still in the lab.</p>
     </div>
-    <div>
-      <div class="about-text fade-up">
-        <h2>I build what I design. <em>End to end.</em></h2>
-        <p>Computer Engineering student at UNSW who sits at the intersection of engineering and product. I don't just spec things out. I ship them. Every project in my portfolio is live, deployed, and used by real people.</p>
-        <p>Outside of code: Events Director at UNSW Golf Society, ex state rower, violin player, and founder of a studio that scaled to 110k monthly viewers while managing a team of artists.</p>
-      </div>
-      <div class="chip-row fade-up">
-        <span class="chip">🧗 Bouldering</span>
-        <span class="chip">📈 Financial Markets</span>
-        <span class="chip">🎮 Riot Games Society</span>
-        <span class="chip">🎻 Violin</span>
-        <span class="chip">⛳ UNSW Golf Society</span>
-      </div>
-      <div class="stats-row fade-up">
-        <div class="stat-box">
-          <span class="stat-n">110k</span>
-          <div class="stat-l">monthly viewers grown at Ruggy Ducky Studios</div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="band" id="about">
+    <div class="shell">
+      <p class="kicker">Who's behind the counter</p>
+      <div class="about">
+        <div class="rise">
+          <img src="photos/headshot.webp" alt="Donald Chung" class="about-shot"
+               width="800" height="800" loading="lazy" decoding="async" />
+          <p class="about-cap">Sydney, Australia</p>
         </div>
-        <div class="stat-box">
-          <span class="stat-n">$100k</span>
-          <div class="stat-l">revenue led within 2 months at Snap Wireless</div>
-        </div>
-        <div class="stat-box">
-          <span class="stat-n">40%</span>
-          <div class="stat-l">avg student grade improvement as tutor</div>
-        </div>
-        <div class="stat-box">
-          <span class="stat-n">5+</span>
-          <div class="stat-l">shipped projects on GitHub</div>
+        <div class="rise">
+          <h2>The rare part<br/>isn't the <span>code</span></h2>
+          <p>I'm a computer engineering student at UNSW, and I can build the thing end to end. So can a lot of people. What's less common is that I've also had to <strong>sell it, staff it, and keep it alive</strong> once it was out.</p>
+          <p>I founded a studio and grew it to 110k monthly viewers while managing a team of artists. I led $100k of revenue in my first two months at Snap Wireless, then built the dashboard that team now runs on. That's why <strong>Snap Ops exists</strong> — I was the user before I was the engineer.</p>
+          <p>Right now I lead growth at <strong>Habeas</strong>, where I own the growth cycles end to end and the SEO and GEO content that feeds them — the same loop as the engineering, just measured in traffic instead of tests.</p>
+          <p>Outside that: Events Director at UNSW Golf Society, ex state rower, and a violinist for longer than I've been a programmer.</p>
+
+          <div class="ledger">
+            <div class="led-row">
+              <div class="led-n">110k</div>
+              <p class="led-l">Monthly viewers at Ruggy Ducky Studios, grown from zero while directing a team of artists.</p>
+            </div>
+            <div class="led-row">
+              <div class="led-n">$100k</div>
+              <p class="led-l">Revenue led in my first two months at Snap Wireless, before I built their ops tooling.</p>
+            </div>
+            <div class="led-row">
+              <div class="led-n">40%</div>
+              <p class="led-l">Average grade improvement across the students I tutored at Tuita, in physics, maths and biology.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<div class="full-border"></div>
+  <!-- EXPERIENCE -->
+  <section class="band-tight" id="work">
+    <div class="shell">
+      <h2 class="kicker">Where I've worked</h2>
+      <div class="tbl rise">
+        <div class="tbl-row">
+          <div>
+            <div class="t-role">Growth Lead</div>
+            <div class="t-org">Habeas · Growth cycles, SEO &amp; GEO content</div>
+          </div>
+          <span class="t-when">2026 — now</span>
+        </div>
+        <div class="tbl-row">
+          <div>
+            <div class="t-role">Manager &amp; Lead Sales</div>
+            <div class="t-org">Snap Wireless · Sydney</div>
+          </div>
+          <span class="t-when">Nov 2025 — now</span>
+        </div>
+        <div class="tbl-row">
+          <div>
+            <div class="t-role">Founder</div>
+            <div class="t-org">Ruggy Ducky Studios · Sydney</div>
+          </div>
+          <span class="t-when">Feb 2025 — now</span>
+        </div>
+        <div class="tbl-row">
+          <div>
+            <div class="t-role">Physics, Maths &amp; Biology Tutor</div>
+            <div class="t-org">Tuita Tutoring · Sydney</div>
+          </div>
+          <span class="t-when">Jan 2025 — Jan 2026</span>
+        </div>
+        <div class="tbl-row">
+          <div>
+            <div class="t-role">Photobooth Assistant</div>
+            <div class="t-org">Happy Cap Studios · Sydney</div>
+          </div>
+          <span class="t-when">Sep 2024 — now</span>
+        </div>
+      </div>
 
-<!-- EXPERIENCE -->
-<section id="experience" class="section">
-  <div class="section-label">Experience</div>
-  <div class="exp-table fade-up">
-    <div class="exp-row">
-      <div>
-        <div class="exp-role">Manager &amp; Lead Sales</div>
-        <div class="exp-company">Snap Wireless · Sydney</div>
+      <h2 class="kicker" style="margin-top:72px;">What I studied</h2>
+      <div class="tbl rise">
+        <div class="tbl-row">
+          <div>
+            <div class="t-role">Bachelor of Computer Engineering (Honours)</div>
+            <div class="t-org">UNSW · HD in Information Systems · Distinctions in Data Structures &amp; Algorithms and Backend Programming</div>
+          </div>
+          <span class="t-when">2024 — 2028</span>
+        </div>
       </div>
-      <span class="exp-date">Nov 2025 – Present</span>
-    </div>
-    <div class="exp-row">
-      <div>
-        <div class="exp-role">Founder</div>
-        <div class="exp-company">Ruggy Ducky Studios · Sydney</div>
-      </div>
-      <span class="exp-date">Feb 2025 – Present</span>
-    </div>
-    <div class="exp-row">
-      <div>
-        <div class="exp-role">Physics, Maths &amp; Biology Tutor</div>
-        <div class="exp-company">Tuita Tutoring · Sydney</div>
-      </div>
-      <span class="exp-date">Jan 2025 – Jan 2026</span>
-    </div>
-    <div class="exp-row">
-      <div>
-        <div class="exp-role">Photobooth Assistant</div>
-        <div class="exp-company">Happy Cap Studios · Sydney</div>
-      </div>
-      <span class="exp-date">Sep 2024 – Present</span>
-    </div>
-  </div>
 
-  <div class="section-label" style="margin-top:60px;">Education</div>
-  <div class="exp-table fade-up">
-    <div class="exp-row">
-      <div>
-        <div class="exp-role">Bachelor of Computer Engineering (Honours)</div>
-        <div class="exp-company">University of New South Wales (UNSW) · HD in INFS2604 · D in COMP2521 (Data Structures &amp; Algorithms) · D in COMP1531 (Backend Programming)</div>
+      <h2 class="kicker" style="margin-top:72px;">What I build with</h2>
+      <div class="stack rise">
+        <div class="st-row">
+          <div class="st-k">Languages</div>
+          <div class="st-v">TypeScript, Python, C, JavaScript, Assembly</div>
+        </div>
+        <div class="st-row">
+          <div class="st-k">Frontend</div>
+          <div class="st-v">Next.js, React, HTML &amp; CSS, interface design</div>
+        </div>
+        <div class="st-row">
+          <div class="st-k">Backend</div>
+          <div class="st-v">Node.js, Express, REST APIs, Supabase, SQLite, Git, Linux</div>
+        </div>
+        <div class="st-row">
+          <div class="st-k">AI</div>
+          <div class="st-v">Claude, GPT-4o, Gemini, and wiring them into products people use</div>
+        </div>
       </div>
-      <span class="exp-date">2024 – 2028</span>
     </div>
-  </div>
+  </section>
 
-  <div class="section-label" style="margin-top:60px;">Stack</div>
-  <div class="skills-grid fade-up">
-    <div class="skill-group">
-      <div class="skill-group-title">Languages</div>
-      <div class="skill-chips">
-        <span class="skill-chip">TypeScript</span>
-        <span class="skill-chip">Python</span>
-        <span class="skill-chip">C</span>
-        <span class="skill-chip">JavaScript</span>
-        <span class="skill-chip">Assembly</span>
+  <!-- CLOSE -->
+  <section class="close" id="hire">
+    <div class="shell">
+      <h2>Still <span>open</span></h2>
+      <p>
+        Looking for a full-stack or product engineering role at an early-stage team —
+        somewhere small enough that shipping it and selling it are the same job.
+        Sydney-based, available now.
+      </p>
+      <div class="close-links">
+        <a class="lnk fill" href="mailto:donaldchung.work@gmail.com">Email me</a>
+        <a class="lnk" href="Donald_Chung_Resume_v5.pdf" download="Donald-Chung-Resume.pdf">Résumé (PDF)</a>
+        <a class="lnk" href="https://github.com/donaldchunggit" target="_blank" rel="noopener">GitHub</a>
+        <a class="lnk" href="https://linkedin.com/in/donald-chung-45229b350" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
-    <div class="skill-group">
-      <div class="skill-group-title">Frontend</div>
-      <div class="skill-chips">
-        <span class="skill-chip">Next.js</span>
-        <span class="skill-chip">React</span>
-        <span class="skill-chip">HTML/CSS</span>
-        <span class="skill-chip">UI/UX Design</span>
-      </div>
-    </div>
-    <div class="skill-group">
-      <div class="skill-group-title">Backend &amp; Tools</div>
-      <div class="skill-chips">
-        <span class="skill-chip">Node.js</span>
-        <span class="skill-chip">Express</span>
-        <span class="skill-chip">REST APIs</span>
-        <span class="skill-chip">Supabase</span>
-        <span class="skill-chip">SQLite</span>
-        <span class="skill-chip">Git</span>
-        <span class="skill-chip">Linux</span>
-      </div>
-    </div>
-    <div class="skill-group">
-      <div class="skill-group-title">AI &amp; LLMs</div>
-      <div class="skill-chips">
-        <span class="skill-chip">Claude (Anthropic)</span>
-        <span class="skill-chip">GPT-4o</span>
-        <span class="skill-chip">Gemini</span>
-        <span class="skill-chip">OpenAI API</span>
-        <span class="skill-chip">Prompt Engineering</span>
-        <span class="skill-chip">AI Integration</span>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<div class="full-border"></div>
-
-<!-- CONTACT -->
-<section id="contact" class="section">
-  <div class="contact-block fade-up">
-    <div>
-      <h2>Let's build<br/>something.</h2>
-      <p>Open to full-stack, UI/UX, and product engineering roles at early-stage startups and high-growth teams. I move fast, care about quality, and thrive in environments where ownership matters. Sydney-based. Available now.</p>
-    </div>
-    <div class="contact-links">
-      <a href="mailto:donaldchung.work@gmail.com" class="c-btn light">email me ↗</a>
-      <a href="https://linkedin.com/in/donald-chung-45229b350" target="_blank" class="c-btn ghost">LinkedIn ↗</a>
-      <a href="https://github.com/donaldchunggit" target="_blank" class="c-btn ghost">GitHub ↗</a>
-    </div>
-  </div>
-</section>
+</main>
 
 <footer>
-  built &amp; designed by donald chung · 2026 · sydney, australia
+  <div class="foot-in">
+    <span>Built and designed by Donald Chung</span>
+    <span>Sydney · 2026</span>
+  </div>
 </footer>
 
 <script>
-  // Parallax hero
-  const heroBg = document.getElementById('heroBg');
-  window.addEventListener('scroll', () => {
-    if (heroBg) heroBg.style.transform = `scale(1.04) translateY(${window.scrollY * 0.22}px)`;
-  }, { passive: true });
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Scroll fade-in
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 60);
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  // Live Sydney clock — makes "open now" literal, not a slogan.
+  const clock = document.getElementById('clock');
+  const fmt = new Intl.DateTimeFormat('en-AU', {
+    timeZone: 'Australia/Sydney', hour12: false,
+    hour: '2-digit', minute: '2-digit', second: '2-digit'
+  });
+  const tick = () => { clock.textContent = 'SYDNEY ' + fmt.format(new Date()); };
+  tick();
+  setInterval(tick, 1000);
 
-  // Active nav on scroll
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
-  new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navLinks.forEach(a => {
-          a.style.color = a.getAttribute('href') === '#' + entry.target.id ? 'var(--text)' : '';
-        });
-      }
+  // Split-flap: the status column settles like a departure board.
+  const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  function flap(el, delay) {
+    const final = el.dataset.flap;
+    const slots = final.split('');
+    let frame = 0;
+    const settleAt = slots.map((c, i) => (c === ' ' ? 0 : 6 + i * 3));
+    const total = Math.max(...settleAt);
+    setTimeout(() => {
+      const id = setInterval(() => {
+        frame++;
+        el.textContent = slots
+          .map((c, i) => (frame >= settleAt[i] ? c : GLYPHS[Math.floor(Math.random() * GLYPHS.length)]))
+          .join('');
+        if (frame > total) { clearInterval(id); el.textContent = final; }
+      }, 34);
+    }, delay);
+  }
+  const flaps = document.querySelectorAll('[data-flap]');
+  if (reduced) {
+    flaps.forEach(el => { el.textContent = el.dataset.flap; });
+  } else {
+    flaps.forEach((el, i) => { el.textContent = ''; flap(el, 260 + i * 110); });
+  }
+
+  // Scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
     });
-  }, { threshold: 0.4 }).observe && sections.forEach(s =>
-    new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) navLinks.forEach(a => {
-          a.style.color = a.getAttribute('href') === '#' + entry.target.id ? 'var(--text)' : '';
-        });
-      });
-    }, { threshold: 0.4 }).observe(s)
-  );
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.rise').forEach(el => io.observe(el));
 </script>
 </body>
 </html>
