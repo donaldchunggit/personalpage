@@ -79,7 +79,7 @@ export default function Home() {
       </a>
 
       <header className="bar">
-        <div className="bar-in">
+        <div className="bar-in dock">
           <a href="#top" className="bar-name">
             Donald Chung
           </a>
@@ -293,7 +293,7 @@ export default function Home() {
       </main>
 
       <footer>
-        <div className="foot-in">
+        <div className="foot-in dock">
           <span>Built and designed by Donald Chung</span>
           <span>Sydney · 2026</span>
         </div>

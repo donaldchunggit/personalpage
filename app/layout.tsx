@@ -1,23 +1,19 @@
 import type { Metadata } from "next";
-import { Newsreader, Inter_Tight, Martian_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
+import { Gallery } from "./gallery";
 import "./globals.css";
 
-const newsreader = Newsreader({
+/* zimmr's faces: Geist for everything you read, Geist Mono for the tiny
+   tracked labels and the numbers. */
+const geistSans = Geist({
   subsets: ["latin"],
-  style: ["normal", "italic"],
-  variable: "--font-newsreader",
+  variable: "--font-geist-sans",
   display: "swap",
 });
 
-const interTight = Inter_Tight({
+const geistMono = Geist_Mono({
   subsets: ["latin"],
-  variable: "--font-inter-tight",
-  display: "swap",
-});
-
-const martianMono = Martian_Mono({
-  subsets: ["latin"],
-  variable: "--font-martian",
+  variable: "--font-geist-mono",
   display: "swap",
 });
 
@@ -98,16 +94,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${newsreader.variable} ${interTight.variable} ${martianMono.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <head>
-        <meta name="theme-color" content="#E9EAE6" />
+        <meta name="theme-color" content="#fcfcfb" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <Gallery />
+        {children}
+      </body>
     </html>
   );
 }
