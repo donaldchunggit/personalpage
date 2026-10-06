@@ -12,6 +12,24 @@ export type Build = {
 
 export const builds: Build[] = [
   {
+    name: "Checkraise",
+    href: "https://checkraise.app",
+    year: "2026 · mobile app",
+    what: "Teaches poker from the deal up and turns every decision into one rating you can put beside a friend's. Graded by engines, not AI, with bots to play and home-game settle-ups.",
+    stack: ["Flutter", "FastAPI", "SQLite"],
+    status: "IN BETA",
+    shipped: true,
+  },
+  {
+    name: "zimmr",
+    href: "https://zimmr.ai",
+    year: "2026 · consumer",
+    what: "A phone-shaped reading app for research students. Searches PubMed and four other catalogues, briefs you on a paper, then deals it out one card at a time.",
+    stack: ["Next.js", "Capacitor", "Upstash Redis"],
+    status: "LIVE",
+    shipped: true,
+  },
+  {
     name: "What's Still Open Sydney",
     href: "https://github.com/donaldchunggit/WhatStillOpenSydney",
     year: "2026 · consumer",

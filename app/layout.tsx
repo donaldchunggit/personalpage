@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: "Donald Chung · what's still open",
   description:
-    "Donald Chung, computer engineering at UNSW. Eight builds, seven deployed. Lead growth engineer at Habeas. Open to full-stack and product engineering roles in Sydney.",
+    "Donald Chung, computer engineering at UNSW. Ten builds, nine deployed. Lead growth engineer at Habeas. Open to full-stack and product engineering roles in Sydney.",
   authors: [{ name: "Donald Chung" }],
   alternates: { canonical: SITE },
   openGraph: {
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     url: SITE,
     title: "Donald Chung · what's still open",
     description:
-      "Full-stack & product engineering. Eight builds, seven deployed and running. Open to work in Sydney.",
+      "Full-stack & product engineering. Ten builds, nine deployed and running. Open to work in Sydney.",
     images: [
       {
         url: "/og.png",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Donald Chung · what's still open",
     description:
-      "Full-stack & product engineering. Eight builds, seven deployed and running. Open to work in Sydney.",
+      "Full-stack & product engineering. Ten builds, nine deployed and running. Open to work in Sydney.",
     images: ["/og.png"],
   },
   icons: { icon: "/favicon.svg" },

@@ -12,8 +12,8 @@ npm install
 npm run dev      # http://localhost:3000
 ```
 
-Content lives in `app/data.ts` — builds, roles, education. The "eight builds,
-seven deployed" tally on the page is counted from that array, so adding a build
+Content lives in `app/data.ts` — builds, roles, education. The "ten builds,
+nine deployed" tally on the page is counted from that array, so adding a build
 updates the prose automatically.
 
 ## Deploy
